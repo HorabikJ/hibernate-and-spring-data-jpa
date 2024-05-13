@@ -1,0 +1,8 @@
+FROM mysql:8.0
+
+ENV MYSQL_ROOT_PASSWORD=root
+
+# https://stackoverflow.com/questions/62999267/how-to-run-mysql-scripts-in-docker-image
+COPY ./mysqlusers.sql /docker-entrypoint-initdb.d
+
+EXPOSE 3306
