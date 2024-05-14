@@ -7,6 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+/**
+ @SpringBootTest brings up entire Spring context, so {@link guru.springframework.sdjpaintro.bootstrap.DataInitializer}
+ is also run, and we can run assertions that check the data in db that was persisted in this {@code CommandLineRunner}.
+ */
 @SpringBootTest
 class SdjpaIntroApplicationTests {
 

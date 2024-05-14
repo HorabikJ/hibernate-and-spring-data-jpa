@@ -14,8 +14,11 @@ import org.springframework.test.annotation.Rollback;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
- * Created by jt on 7/3/21.
- */
+@DataJpaTest brings up only context with @Repository classes, to give minimum context for testing repositories. So, 
+because of that the {@link guru.springframework.sdjpaintro.bootstrap.DataInitializer} is not run as it would be with 
+@SpringBootTest class. Also, @DataJpaTest consist of @Transactional, so all test in this class are @Transactional, 
+which is not present in @SpringBootTest.
+*/
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
 public class SpringBootJpaTestSlice {
