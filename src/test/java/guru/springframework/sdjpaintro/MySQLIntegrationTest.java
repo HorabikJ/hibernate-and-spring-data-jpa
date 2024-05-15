@@ -18,6 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  * the autoconfiguration of H2 database by using 
  * {@code @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)}, so H2 will not be 
  * autoconfigured, and we will be provided with the DataSource as per "local" properties.
+ * It can be seen which DB is brought up by analyzing the startup logs of this test.
  */
 @ActiveProfiles("local")
 @DataJpaTest
