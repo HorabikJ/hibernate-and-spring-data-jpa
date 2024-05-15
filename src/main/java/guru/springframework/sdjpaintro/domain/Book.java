@@ -6,9 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.Objects;
 
-/**
- * Created by jt on 6/12/21.
- */
 @Entity
 public class Book {
 
