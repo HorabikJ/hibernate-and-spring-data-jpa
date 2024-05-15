@@ -22,7 +22,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  * 
  * By adding {@code @ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})} we add bean 
  * {@link guru.springframework.sdjpaintro.bootstrap.DataInitializer} to the context of this test, so this bean will be 
- * initialized with the run of below test class.
+ * initialized and run when below test class is run.
  */
 @ActiveProfiles("local")
 @DataJpaTest
