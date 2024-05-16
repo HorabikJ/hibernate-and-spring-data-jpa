@@ -1,0 +1,2 @@
+The resources/db/changelog/ folder is a Spring's default location for database migration, database version control 
+files. That is why we keep our liquibase files here.
