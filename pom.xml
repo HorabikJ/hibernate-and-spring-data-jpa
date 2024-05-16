@@ -72,6 +72,38 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.27.0</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/bookdb</url>
+                    <username>bookdb</username>
+                    <password>password</password>
+                    <outputChangeLogFile>changelog.xml</outputChangeLogFile>
+                    <changeSetAuthor>JH</changeSetAuthor>
+                    <changelogSchemaName>bookdb</changelogSchemaName>
+                </configuration>
+                <!--Plugins do not have dependencies included. That is why we need to include the postgresql 
+                dependency in this plugin to give liquibase plugin a postgresql dependency so liquibase can 
+                talk/connect to postgresql using drivers from this  dependency. Also, we set the 
+                ${postgresql.version} so it will be inherited from the parent pom file for this 
+                dependency. Somehow liquibase works without postgresql dependency so leaving postgresql dependency 
+                commented out. To generate change log run liquibase goal: `liquibase:generateChangelog`.
+                 
+                Liquibase homepage: https://docs.liquibase.com/tools-integrations/home.html
+                Useful liquibase link: https://docs.liquibase.com/tools-integrations/maven/home.html
+                Maven Liquibase goals: https://docs.liquibase.com/tools-integrations/maven/commands/home.html
+                Liquibase best practices: https://docs.liquibase.com/concepts/bestpractices.html-->
+              
+                <!--                <dependencies>-->
+                <!--                    <dependency>-->
+                <!--                        <groupId>org.postgresql</groupId>-->
+                <!--                        <artifactId>postgresql</artifactId>-->
+                <!--                        <version>${postgresql.version}</version>-->
+                <!--                    </dependency>-->
+                <!--                </dependencies>-->
+            </plugin>
         </plugins>
     </build>
 
