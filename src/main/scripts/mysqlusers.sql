@@ -1,3 +1,4 @@
+-- Run this script in MySql Workbench to create database, and users.
 DROP DATABASE IF EXISTS bookdb;
 DROP USER IF EXISTS `bookadmin`@`%`;
 DROP USER IF EXISTS `bookuser`@`%`;
