@@ -36,10 +36,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
@@ -47,11 +43,12 @@
     </dependencies>
 
     <profiles>
-        <!-- We are using this maven 'h2' profile as above general h2 dependency has test scope, so when we run aour 
-        SpringApplication without any Spring profile there is an error as Spring does not see h2 dependency. What we want is 
-        to run our SpringApplication in prod mode with h2 database without any spring profile, so we are creating this mvn 
-        profile. Then we can run our SpringApplication with only 'default' spring profile and with 'h2' mvn profile, so h2 
-        will be brought up then.
+        <!-- We are using this maven 'h2' profile as above general h2 dependency has test scope, so when we run our 
+        SpringApplication without any Spring profile there is an error as Spring does not see h2 dependency, as in 
+        the <project><dependencies> the h2 dependency has <test> scope, that is why SpringBoot app does not see this 
+        dependency when starting. What we want is to run our SpringApplication in prod mode with h2 database without
+        any spring profile, so we are creating this mvn profile. Then we can run our SpringApplication with only 
+        'default' spring profile and with 'h2' mvn profile, so h2 will be brought up then.
          -->
         <profile>
             <id>h2</id>
@@ -59,6 +56,28 @@
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>liquibase</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-core</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>flyway</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.flywaydb</groupId>
+                    <artifactId>flyway-core</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.flywaydb</groupId>
+                    <artifactId>flyway-mysql</artifactId>
                 </dependency>
             </dependencies>
         </profile>
