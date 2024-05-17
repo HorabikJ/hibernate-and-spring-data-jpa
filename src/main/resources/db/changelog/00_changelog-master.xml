@@ -6,6 +6,7 @@
   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <include file="/db/changelog/01_baseline-changelog.xml"/>
     <include file="/db/changelog/02_init-hibernate.xml"/>
+    <include file="/db/changelog/03_add-author-id-to-book.xml"/>
 </databaseChangeLog>
 
         <!--This is a root changelog file, as per liquibase best practices:
