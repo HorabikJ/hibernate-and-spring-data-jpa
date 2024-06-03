@@ -1,12 +1,11 @@
-# Spring Data JPA - Introduction to Spring Data JPA
+## Course
 
-This repository contains source code examples to support my course Spring Data JPA and Hibernate Beginner to Guru
+Link to the course: https://www.udemy.com/course/hibernate-and-spring-data-jpa-beginner-to-guru
 
-You can access the API documentation [here](https://sfg-beer-works.github.io/brewery-api/#tag/Beer-Service)
+## How to run the app:
 
-## Connect with Spring Framework Guru
-* Spring Framework Guru [Blog](https://springframework.guru/)
-* Subscribe to Spring Framework Guru on [YouTube](https://www.youtube.com/channel/UCrXb8NaMPQCQkT8yMP_hSkw)
-* Like Spring Framework Guru on [Facebook](https://www.facebook.com/springframeworkguru/)
-* Follow Spring Framework Guru on [Twitter](https://twitter.com/spring_guru)
-* Connect with John Thompson on [LinkedIn](http://www.linkedin.com/in/springguru)
+1. Install mysql workbench.
+2. Run the `SdjpaIntroApplication` class in order to start the app. Run it with `local,clean` Spring profiles.
+3. About maven, there are 3 maven profiles, `h2,liquibase,flyway` `h2` should be used always, as we use this in
+   memory db always. Whole course is based on `flyway` migration scripts as this is the choice of the author.
+   `liquibase` is just for educational purposes, to show second db migration tool.
