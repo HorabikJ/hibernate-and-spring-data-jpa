@@ -3,6 +3,7 @@ package guru.springframework.sdjpaintro.domain.composite;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.Table;
 
 /**
  * In {@code AuthorComposite} class we use composite PK. We need to specify the class that is an abstraction for
@@ -10,6 +11,7 @@ import jakarta.persistence.IdClass;
  */
 @Entity
 @IdClass(NameId.class)
+@Table(name = "author_composite")
 public class AuthorComposite {
 
     @Id
