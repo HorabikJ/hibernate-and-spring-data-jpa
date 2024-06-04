@@ -26,12 +26,12 @@ initialized with the run of below test class.
 {@code @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)} is added because we want to 
 configure our H2 in memory DB as per the properties in `application.properties`, not with SpringBoot default 
 autoconfigure values.
-*/
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
 @ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class SpringBootJpaTestSlice {
+class SpringBootJpaTestSlice {
 
     @Autowired
     BookRepository bookRepository;

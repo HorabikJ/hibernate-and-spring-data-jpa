@@ -24,7 +24,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  * {@code @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)}, so H2 will not be 
  * autoconfigured, and we will be provided with the DataSource as per "local" properties.
  * It can be seen which DB is brought up by analyzing the startup logs of this test.
- * 
+ *
  * By adding {@code @ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})} we add bean 
  * {@link guru.springframework.sdjpaintro.bootstrap.DataInitializer} to the context of this test, so this bean will be 
  * initialized and run when below test class is run.
@@ -33,7 +33,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DataJpaTest
 @ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class MySQLIntegrationTest {
+class MySQLIntegrationTest {
 
     @Autowired
     BookRepository bookRepository;

@@ -1,10 +1,10 @@
 package guru.springframework.sdjpaintro.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+@NamedQuery(
+        name = "count_authors_with_given_lastname",
+        query = "SELECT COUNT(a) FROM Author a WHERE a.lastName = :last_name")
 @Entity
 public class Author {
 

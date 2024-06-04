@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -65,7 +66,6 @@ class AuthorDaoHibernateTest {
     }
 
     @Test
-    @Commit
     void updateAuthor() {
         Author author = new Author();
         author.setFirstName("NewAuthorFirstName-4");
@@ -93,4 +93,62 @@ class AuthorDaoHibernateTest {
         Author deleted = authorDao.getById(persistedAuthor.getId());
         assertThat(deleted).isNull();
     }
+
+    @Test
+    void listAuthorByLastNameLike() {
+        Author author1 = new Author();
+        author1.setFirstName("Eduardo");
+        author1.setLastName("Tralala");
+        authorDao.saveNewAuthor(author1);
+
+        Author author2 = new Author();
+        author2.setFirstName("Wallie");
+        author2.setLastName("Blablala");
+        authorDao.saveNewAuthor(author2);
+
+        Author author3 = new Author();
+        author3.setFirstName("Dominic");
+        author3.setLastName("Barboza");
+        authorDao.saveNewAuthor(author3);
+
+        List<Author> authors = authorDao.listAuthorByLastNameLike("ala");
+        assertThat(authors).hasSize(2);
+    }
+
+    @Test
+    void countAuthorsWithGivenLastname() {
+        Author author1 = new Author();
+        author1.setFirstName("Eduardo");
+        author1.setLastName("Smith");
+        authorDao.saveNewAuthor(author1);
+
+        Author author2 = new Author();
+        author2.setFirstName("Wallie");
+        author2.setLastName("Kowalsky");
+        authorDao.saveNewAuthor(author2);
+
+        Author author3 = new Author();
+        author3.setFirstName("Dominic");
+        author3.setLastName("Kowalsky");
+        authorDao.saveNewAuthor(author3);
+
+        Long count = authorDao.countAuthorsWithGivenLastname("Kowalsky");
+
+        assertThat(count).isEqualTo(2);
+    }
+
+    @Test
+    void findAuthorByNameCriteria() {
+        Author author = new Author();
+        author.setFirstName("Eduardo");
+        author.setLastName("Saragado");
+        authorDao.saveNewAuthor(author);
+
+        Author fetchedAuthor = authorDao.findAuthorByNameCriteria("Eduardo", "Saragado");
+
+        assertThat(fetchedAuthor).isNotNull();
+        assertThat(fetchedAuthor.getLastName()).isEqualTo("Saragado");
+        assertThat(fetchedAuthor.getFirstName()).isEqualTo("Eduardo");
+    }
+
 }

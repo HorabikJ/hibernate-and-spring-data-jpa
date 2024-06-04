@@ -4,8 +4,21 @@ import guru.springframework.sdjpaintro.dao.AuthorDao;
 import guru.springframework.sdjpaintro.domain.Author;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+/**
+ * For more info how to properly use entity manager see: https://www.geeksforgeeks.org/jpa-hibernate-entity-manager/
+ * It describes how to get the instance of EntityManager, manage its transactions and flushing, clearing cache.
+ * I am not doing this over here as today nobody really uses standalone Hibernate, it is always used with Spring Data
+ * JPA and I want to focus on that more in this course. Also, I think that creating a new transaction for each query
+ * in the Dao layer is not a good practice, as it is shown in the above link. Transaction management should be
+ * implemented a layer higher, in service layer, not in the Dao layer. Dao layer should be responsible only for
+ * saving, deleting or fetching the data. Service layer should manage transactions as in service we may have several
+ * Dao methods grouped in one service method that is transactional.
+ */
 @Component
 public class AuthorDaoHibernate implements AuthorDao {
 
@@ -59,5 +72,46 @@ public class AuthorDaoHibernate implements AuthorDao {
         entityManager.remove(author);
         entityManager.flush();
     }
+
+    @Override
+    public List<Author> listAuthorByLastNameLike(String lastName) {
+        TypedQuery<Author> query = entityManager.createQuery(
+                "SELECT a FROM Author a WHERE a.lastName LIKE :last_name",
+                Author.class);
+        query.setParameter("last_name", "%" + lastName + "%");
+        return query.getResultList();
+    }
+
+    @Override
+    public Long countAuthorsWithGivenLastname(String lastName) {
+        TypedQuery<Long> query = entityManager.createNamedQuery(
+                "count_authors_with_given_lastname",
+                Long.class);
+        query.setParameter("last_name", lastName);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public Author findAuthorByNameCriteria(String firstName, String lastName) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Author> query = criteriaBuilder.createQuery(Author.class);
+
+        Root<Author> root = query.from(Author.class);
+
+        ParameterExpression<String> firstNameParam = criteriaBuilder.parameter(String.class);
+        ParameterExpression<String> lastNameParam = criteriaBuilder.parameter(String.class);
+
+        Predicate firstNamePredicate = criteriaBuilder.equal(root.get("firstName"), firstNameParam);
+        Predicate lastNamePredicate = criteriaBuilder.equal(root.get("lastName"), lastNameParam);
+
+        query.select(root).where(criteriaBuilder.and(firstNamePredicate, lastNamePredicate));
+
+        TypedQuery<Author> typedQuery = entityManager.createQuery(query);
+        typedQuery.setParameter(firstNameParam, firstName);
+        typedQuery.setParameter(lastNameParam, lastName);
+
+        return typedQuery.getSingleResult();
+    }
+
 
 }
