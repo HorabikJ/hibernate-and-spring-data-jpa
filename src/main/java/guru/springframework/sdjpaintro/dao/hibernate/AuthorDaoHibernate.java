@@ -117,5 +117,19 @@ public class AuthorDaoHibernate {
         return typedQuery.getSingleResult();
     }
 
+    public void firstLevelCacheDemo() {
+        // comment out one of or all entityManager.clear() lines and observe the logs 
+        Author author = new Author();
+        author.setFirstName("John");
+        author.setLastName("Doe");
+        entityManager.persist(author);
+        System.out.println("---");
+        entityManager.clear();
+        entityManager.find(Author.class, author.getId());
+        System.out.println("---");
+        entityManager.clear();
+        entityManager.find(Author.class, author.getId());
+    }
+
 
 }

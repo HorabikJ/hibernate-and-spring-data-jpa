@@ -151,4 +151,9 @@ class AuthorDaoHibernateTest {
         assertThat(fetchedAuthor.getFirstName()).isEqualTo("Eduardo");
     }
 
+    @Test
+    void firstLevelCacheDemo() {
+        authorDao.firstLevelCacheDemo();
+    }
+
 }
