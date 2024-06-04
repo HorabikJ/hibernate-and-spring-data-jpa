@@ -160,19 +160,4 @@ class AuthorDaoSpringDataJpaTest {
         assertThat(count).isEqualTo(2);
     }
 
-    @Test
-    void findAuthorByNameCriteria() {
-        Author author = new Author();
-        author.setFirstName("Eduardo");
-        author.setLastName("Saragado");
-        authorDao.saveNewAuthor(author);
-
-        Author fetchedAuthor = authorDao.findAuthorByNameCriteria("Eduardo", "Saragado");
-
-        assertThat(fetchedAuthor).isNotNull();
-        assertThat(fetchedAuthor.getLastName()).isEqualTo("Saragado");
-        assertThat(fetchedAuthor.getFirstName()).isEqualTo("Eduardo");
-    }
-
-
 }

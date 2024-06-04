@@ -1,6 +1,5 @@
 package guru.springframework.sdjpaintro.dao.hibernate;
 
-import guru.springframework.sdjpaintro.dao.AuthorDao;
 import guru.springframework.sdjpaintro.domain.Author;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -20,7 +19,7 @@ import java.util.List;
  * Dao methods grouped in one service method that is transactional.
  */
 @Component
-public class AuthorDaoHibernate implements AuthorDao {
+public class AuthorDaoHibernate {
 
     private final EntityManager entityManager;
 
@@ -28,12 +27,10 @@ public class AuthorDaoHibernate implements AuthorDao {
         this.entityManager = entityManager;
     }
 
-    @Override
     public Author getById(Long id) {
         return entityManager.find(Author.class, id);
     }
 
-    @Override
     public Author findAuthorByName(String firstName, String lastName) {
         TypedQuery<Author> query = entityManager.createQuery(
                 "SELECT a FROM Author a WHERE a.firstName = :first_name AND a.lastName = :last_name",
@@ -44,7 +41,6 @@ public class AuthorDaoHibernate implements AuthorDao {
         return query.getSingleResult();
     }
 
-    @Override
     public Author saveNewAuthor(Author author) {
         entityManager.joinTransaction();
         entityManager.persist(author);
@@ -52,7 +48,6 @@ public class AuthorDaoHibernate implements AuthorDao {
         return author;
     }
 
-    @Override
     public Author updateAuthor(Author author) {
         entityManager.joinTransaction();
         entityManager.merge(author); // Merge function can merge the entity to hibernate transaction context but not 
@@ -65,7 +60,6 @@ public class AuthorDaoHibernate implements AuthorDao {
         // level cache was cleared line above. 
     }
 
-    @Override
     public void deleteAuthorById(Long id) {
         entityManager.joinTransaction();
         Author author = entityManager.find(Author.class, id);
@@ -73,7 +67,6 @@ public class AuthorDaoHibernate implements AuthorDao {
         entityManager.flush();
     }
 
-    @Override
     public List<Author> listAuthorByLastNameLike(String lastName) {
         TypedQuery<Author> query = entityManager.createQuery(
                 "SELECT a FROM Author a WHERE a.lastName LIKE :last_name",
@@ -82,7 +75,6 @@ public class AuthorDaoHibernate implements AuthorDao {
         return query.getResultList();
     }
 
-    @Override
     public Long countAuthorsWithGivenLastname(String lastName) {
         TypedQuery<Long> query = entityManager.createNamedQuery(
                 "count_authors_with_given_lastname",
@@ -91,7 +83,6 @@ public class AuthorDaoHibernate implements AuthorDao {
         return query.getSingleResult();
     }
 
-    @Override
     public Author findAuthorByNameCriteria(String firstName, String lastName) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Author> query = criteriaBuilder.createQuery(Author.class);
