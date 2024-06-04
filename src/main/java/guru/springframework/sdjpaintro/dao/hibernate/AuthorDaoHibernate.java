@@ -50,10 +50,23 @@ public class AuthorDaoHibernate {
 
     public Author updateAuthor(Author author) {
         entityManager.joinTransaction();
-        entityManager.merge(author); // Merge function can merge the entity to hibernate transaction context but not 
+
+        // first way of updating an entity ->>>
+        Author dbAuthor = entityManager.find(Author.class, author.getId());
+        dbAuthor.setFirstName(author.getFirstName());
+        dbAuthor.setLastName(author.getLastName());
+
+        // second way of updating an entity ->>>
+//        entityManager.merge(author); // Merge function can merge the entity to hibernate transaction context but not 
         // always have to perform the operations on the db after merging, so that is why we have to use below method 
         // calls to make sure that changes we made to the author entity in hibernate context will be performed on the
         // db. 
+
+        // We chose the first way because, we do not want to use merge() function. And because of that any chenges 
+        // that are done to persisted entity (persisted means attached to Hibernate session) will be reflected in db 
+        // when the Hibernate session is flushed or committed. According to: 
+        // https://stackoverflow.com/questions/49604134/update-vs-merge-method-in-hibernate
+        
         entityManager.flush(); // Flushing the db operations from current hibernate transaction to db.
         entityManager.clear(); // Clearing 1st level cache.
         return entityManager.find(Author.class, author.getId()); // fetching author directly form db, as 1st 
