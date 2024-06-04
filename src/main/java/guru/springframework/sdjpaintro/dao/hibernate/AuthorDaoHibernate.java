@@ -33,12 +33,9 @@ public class AuthorDaoHibernate implements AuthorDao {
 
     @Override
     public Author saveNewAuthor(Author author) {
-//        Below commented lines can be useful when we want to use this method outside the transaction.
-//        Or when Hibernate transaction manager is not in sync with SpringBoot transaction manager.
-//        entityManager.getTransaction().begin();
+        entityManager.joinTransaction();
         entityManager.persist(author);
         entityManager.flush();
-//        entityManager.getTransaction().commit();
         return author;
     }
 
@@ -57,6 +54,7 @@ public class AuthorDaoHibernate implements AuthorDao {
 
     @Override
     public void deleteAuthorById(Long id) {
+        entityManager.joinTransaction();
         Author author = entityManager.find(Author.class, id);
         entityManager.remove(author);
         entityManager.flush();
