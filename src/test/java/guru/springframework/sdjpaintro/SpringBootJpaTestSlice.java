@@ -1,7 +1,7 @@
 package guru.springframework.sdjpaintro;
 
-import guru.springframework.sdjpaintro.domain.Book;
-import guru.springframework.sdjpaintro.repositories.BookRepository;
+import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.Book;
+import guru.springframework.sdjpaintro.repositories.hibernatePrimaryKeys.BookRepository;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

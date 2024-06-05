@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.domain.composite;
+package guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.composite;
 
 import jakarta.persistence.Embeddable;
 

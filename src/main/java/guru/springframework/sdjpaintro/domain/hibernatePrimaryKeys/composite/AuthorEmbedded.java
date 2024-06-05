@@ -1,11 +1,11 @@
-package guru.springframework.sdjpaintro.domain.composite;
+package guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.composite;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 /**
- * In this class we want to use the same table as in {@link guru.springframework.sdjpaintro.domain.composite.AuthorComposite}
+ * In this class we want to use the same table as in {@link AuthorComposite}
  * class. We only change the type of the PK in Java, instead of 2 different fields {@code String firstName} and
  * {@code String lastName}, we have a field with type {@code NameId} which is more elegant and object-oriented.
  */

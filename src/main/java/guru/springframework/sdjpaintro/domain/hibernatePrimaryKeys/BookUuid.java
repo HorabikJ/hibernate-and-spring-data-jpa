@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.domain;
+package guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

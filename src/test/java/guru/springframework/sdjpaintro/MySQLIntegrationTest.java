@@ -1,12 +1,12 @@
 package guru.springframework.sdjpaintro;
 
-import guru.springframework.sdjpaintro.domain.AuthorUuid;
-import guru.springframework.sdjpaintro.domain.BookNatural;
-import guru.springframework.sdjpaintro.domain.BookUuid;
-import guru.springframework.sdjpaintro.domain.composite.AuthorComposite;
-import guru.springframework.sdjpaintro.domain.composite.AuthorEmbedded;
-import guru.springframework.sdjpaintro.domain.composite.NameId;
-import guru.springframework.sdjpaintro.repositories.*;
+import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.AuthorUuid;
+import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.BookNatural;
+import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.BookUuid;
+import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.composite.AuthorComposite;
+import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.composite.AuthorEmbedded;
+import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.composite.NameId;
+import guru.springframework.sdjpaintro.repositories.hibernatePrimaryKeys.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

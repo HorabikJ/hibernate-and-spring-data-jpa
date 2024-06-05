@@ -1,6 +1,6 @@
-package guru.springframework.sdjpaintro.repositories;
+package guru.springframework.sdjpaintro.repositories.hibernatePrimaryKeys;
 
-import guru.springframework.sdjpaintro.domain.Author;
+import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.scheduling.annotation.Async;

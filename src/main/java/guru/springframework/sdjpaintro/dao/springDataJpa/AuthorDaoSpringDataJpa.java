@@ -1,7 +1,7 @@
 package guru.springframework.sdjpaintro.dao.springDataJpa;
 
-import guru.springframework.sdjpaintro.domain.Author;
-import guru.springframework.sdjpaintro.repositories.AuthorJpaRepository;
+import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.Author;
+import guru.springframework.sdjpaintro.repositories.hibernatePrimaryKeys.AuthorJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

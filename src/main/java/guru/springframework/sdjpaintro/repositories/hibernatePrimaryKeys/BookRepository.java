@@ -1,6 +1,6 @@
-package guru.springframework.sdjpaintro.repositories;
+package guru.springframework.sdjpaintro.repositories.hibernatePrimaryKeys;
 
-import guru.springframework.sdjpaintro.domain.Book;
+import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
