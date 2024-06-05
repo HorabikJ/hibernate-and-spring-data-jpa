@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.domain.mappedSuperClass;
+package guru.springframework.sdjpaintro.domain.hibernateJavaMappings;
 
 import org.junit.jupiter.api.Test;
 
