@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -25,13 +24,13 @@ public class OrderService {
                                        Address billingAddress,
                                        Address shippingAddress,
                                        Set<OrderLine> orderLines) {
-        List<OrderLine> savedOrderLines = orderLineRepository.saveAll(orderLines);
+//        List<OrderLine> savedOrderLines = orderLineRepository.saveAll(orderLines);
         OrderHeader orderHeader = new OrderHeader(
                 customer,
                 shippingAddress,
                 billingAddress,
                 OrderStatus.NEW,
-                Set.copyOf(savedOrderLines));
+                Set.copyOf(orderLines));
         return orderHeaderRepository.save(orderHeader);
     }
 

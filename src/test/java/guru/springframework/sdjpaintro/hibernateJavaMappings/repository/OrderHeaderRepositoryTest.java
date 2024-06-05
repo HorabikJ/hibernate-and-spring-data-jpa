@@ -7,7 +7,8 @@ import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.OrderStatus;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
@@ -15,8 +16,9 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@DataJpaTest
 @ActiveProfiles("local")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class OrderHeaderRepositoryTest {
 
     @Autowired
@@ -82,18 +84,22 @@ class OrderHeaderRepositoryTest {
                 Sets.newHashSet());
 
         OrderHeader saved = repository.save(orderHeader);
-
+        repository.flush();
         saved.setCustomer("new Customer");
 
         Thread.sleep(3000L);
 
         OrderHeader updated = repository.save(saved);
-
+        repository.flush();
         OrderHeader fetched = repository.findById(updated.getId()).get();
 
         assertThat(fetched.getId()).isEqualTo(saved.getId());
         assertThat(fetched.getCustomer()).isEqualTo("new Customer");
-        // when this test is @Transactional it fails - todo investigate why
+        // When this test is @Transactional it fails - todo investigate why -> we need to flush() after each save, then 
+        // correct update timestamps are set in entities in hibernate session. Without flushing, OrderHeader entity 
+        // is first created and then modified modified in hibernate session only, not in db. We save and modify the 
+        // entity in hibernate session, not in db layer, thus there is only one insert from hibernate session to db 
+        // and because of that update and creation timestamps are the same. 
         assertThat(fetched.getCreatedDate()).isBefore(fetched.getModifiedDate());
     }
 

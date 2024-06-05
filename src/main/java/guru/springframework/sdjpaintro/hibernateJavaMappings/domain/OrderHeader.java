@@ -45,7 +45,7 @@ public class OrderHeader extends BaseEntity {
     private Address billingAddress;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    @OneToMany(mappedBy = "orderHeader")
+    @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
     @EqualsAndHashCode.Exclude
     private Set<OrderLine> orderLines;
 
