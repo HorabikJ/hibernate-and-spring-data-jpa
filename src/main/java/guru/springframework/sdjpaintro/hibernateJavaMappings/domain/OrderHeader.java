@@ -1,10 +1,10 @@
 package guru.springframework.sdjpaintro.hibernateJavaMappings.domain;
 
 import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.Objects;
+import java.util.Set;
 
-@Entity
 @AttributeOverrides({
         @AttributeOverride(
                 name = "shippingAddress.address",
@@ -29,8 +29,13 @@ import java.util.Objects;
                 column = @Column(name = "billing_state")),
         @AttributeOverride(
                 name = "billingAddress.zipCode",
-                column = @Column(name = "billing_zip_code"))
-})
+                column = @Column(name = "billing_zip_code"))})
+@Entity
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
 public class OrderHeader extends BaseEntity {
 
     private String customer;
@@ -40,72 +45,8 @@ public class OrderHeader extends BaseEntity {
     private Address billingAddress;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    @OneToMany(mappedBy = "orderHeader")
+    @EqualsAndHashCode.Exclude
+    private Set<OrderLine> orderLines;
 
-    public OrderHeader(String customer, Address shippingAddress, Address billingAddress, OrderStatus orderStatus) {
-        this.customer = customer;
-        this.shippingAddress = shippingAddress;
-        this.billingAddress = billingAddress;
-        this.orderStatus = orderStatus;
-    }
-
-    protected OrderHeader() {
-    }
-
-    public String getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(String customer) {
-        this.customer = customer;
-    }
-
-    public Address getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public Address getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(Address billingAddress) {
-        this.billingAddress = billingAddress;
-    }
-
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        OrderHeader that = (OrderHeader) o;
-
-        if (!Objects.equals(customer, that.customer)) return false;
-        if (!Objects.equals(shippingAddress, that.shippingAddress))
-            return false;
-        if (!Objects.equals(billingAddress, that.billingAddress))
-            return false;
-        return orderStatus == that.orderStatus;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (customer != null ? customer.hashCode() : 0);
-        result = 31 * result + (shippingAddress != null ? shippingAddress.hashCode() : 0);
-        result = 31 * result + (billingAddress != null ? billingAddress.hashCode() : 0);
-        result = 31 * result + (orderStatus != null ? orderStatus.hashCode() : 0);
-        return result;
-    }
 }
