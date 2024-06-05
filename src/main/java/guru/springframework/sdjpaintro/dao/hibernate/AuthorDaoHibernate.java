@@ -1,6 +1,6 @@
 package guru.springframework.sdjpaintro.dao.hibernate;
 
-import guru.springframework.sdjpaintro.domain.hibernatePrimaryKeys.Author;
+import guru.springframework.sdjpaintro.hibernatePrimaryKeys.domain.Author;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
