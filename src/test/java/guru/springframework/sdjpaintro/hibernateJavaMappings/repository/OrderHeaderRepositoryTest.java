@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
@@ -41,7 +40,6 @@ class OrderHeaderRepositoryTest {
     }
 
     @Test
-    @Commit
     void shouldModifyOrderHeader() throws Exception {
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
