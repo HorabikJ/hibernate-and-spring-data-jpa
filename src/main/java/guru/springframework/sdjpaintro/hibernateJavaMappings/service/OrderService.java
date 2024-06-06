@@ -24,7 +24,8 @@ public class OrderService {
                                        Address billingAddress,
                                        Address shippingAddress,
                                        Set<OrderLine> orderLines) {
-//        List<OrderLine> savedOrderLines = orderLineRepository.saveAll(orderLines);
+//      We do not have to first save Set<OrderLine>, as this field has CascadeType.PERSIST in OrderHeader entity. 
+//      List<OrderLine> savedOrderLines = orderLineRepository.saveAll(orderLines);
         OrderHeader orderHeader = new OrderHeader(
                 customer,
                 shippingAddress,
