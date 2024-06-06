@@ -1,10 +1,8 @@
 package guru.springframework.sdjpaintro.hibernateJavaMappings.repository;
 
-import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.Address;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.OrderHeader;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.OrderLine;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.OrderStatus;
+import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
 import org.assertj.core.util.Sets;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,14 +20,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OrderHeaderRepositoryTest {
 
     @Autowired
-    private OrderHeaderRepository repository;
+    private OrderHeaderRepository orderHeaderRepository;
+    @Autowired
+    private ProductRepository productRepository;
+
+    private Product product;
+
+    @BeforeEach
+    void saveProduct() {
+        Product radiusPump = new Product("radius pump", ProductStatus.NEW);
+        product = productRepository.saveAndFlush(radiusPump);
+    }
 
     @Test
     void shouldSaveOrderWithLine() {
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
-
-        OrderLine orderLine = new OrderLine(1);
+        OrderLine orderLine = new OrderLine(1, product);
         OrderHeader orderHeader = new OrderHeader(
                 "customer",
                 shippingAddress,
@@ -38,9 +45,9 @@ class OrderHeaderRepositoryTest {
                 Set.of(orderLine));
         orderLine.setOrderHeader(orderHeader);
 
-        OrderHeader saved = repository.save(orderHeader);
-        repository.flush();
-
+        OrderHeader saved = orderHeaderRepository.save(orderHeader);
+        orderHeaderRepository.flush();
+        //order header
         assertThat(saved).isNotNull();
         assertThat(saved.getId()).isNotNull();
         assertThat(saved.getOrderLines()).size().isEqualTo(1);
@@ -48,14 +55,22 @@ class OrderHeaderRepositoryTest {
                 .withFailMessage("All order lines should have non null ids.")
                 .allMatch(ol -> ol.getId() != null);
 
-        OrderHeader fetched = repository.getById(saved.getId());
-
+        OrderHeader fetched = orderHeaderRepository.getById(saved.getId());
+        //order line
         assertThat(fetched).isNotNull();
         assertThat(fetched.getId()).isNotNull();
         assertThat(fetched.getOrderLines()).size().isEqualTo(1);
         assertThat(saved.getOrderLines())
                 .withFailMessage("All order lines should have non null ids.")
                 .allMatch(ol -> ol.getId() != null);
+        //product
+        assertThat(fetched.getOrderLines())
+                .withFailMessage("All order line products should have non null ids.")
+                .allMatch(ol -> ol.getProduct().getId() != null);
+        assertThat(fetched.getOrderLines())
+                .withFailMessage("All order line products should have non null ids.")
+                .anyMatch(ol -> ol.getProduct().getDescription().equals("radius pump")
+                        && ol.getProduct().getProductStatus().equals(ProductStatus.NEW));
     }
 
     @Test
@@ -65,7 +80,7 @@ class OrderHeaderRepositoryTest {
         OrderHeader orderHeader = new OrderHeader("customer", shippingAddress, billingAddress, OrderStatus.NEW,
                 Sets.newHashSet());
 
-        OrderHeader saved = repository.save(orderHeader);
+        OrderHeader saved = orderHeaderRepository.save(orderHeader);
 
         assertThat(saved).isNotNull();
         assertThat(saved.getId()).isNotNull();
@@ -83,15 +98,15 @@ class OrderHeaderRepositoryTest {
         OrderHeader orderHeader = new OrderHeader("customer", shippingAddress, billingAddress, OrderStatus.NEW,
                 Sets.newHashSet());
 
-        OrderHeader saved = repository.save(orderHeader);
-        repository.flush();
+        OrderHeader saved = orderHeaderRepository.save(orderHeader);
+        orderHeaderRepository.flush();
         saved.setCustomer("new Customer");
 
-        Thread.sleep(3000L);
+        Thread.sleep(500L);
 
-        OrderHeader updated = repository.save(saved);
-        repository.flush();
-        OrderHeader fetched = repository.findById(updated.getId()).get();
+        OrderHeader updated = orderHeaderRepository.save(saved);
+        orderHeaderRepository.flush();
+        OrderHeader fetched = orderHeaderRepository.findById(updated.getId()).get();
 
         assertThat(fetched.getId()).isEqualTo(saved.getId());
         assertThat(fetched.getCustomer()).isEqualTo("new Customer");

@@ -13,12 +13,14 @@ import lombok.*;
 public class OrderLine extends BaseEntity {
 
     private Integer quantityOrdered;
-    @ManyToOne
-    @EqualsAndHashCode.Exclude
+    @ManyToOne //bidirectional
     private OrderHeader orderHeader;
+    @ManyToOne //unidirectional
+    private Product product;
 
-    public OrderLine(Integer quantityOrdered) {
+    public OrderLine(Integer quantityOrdered, Product product) {
         this.quantityOrdered = quantityOrdered;
+        this.product = product;
     }
 
 }
