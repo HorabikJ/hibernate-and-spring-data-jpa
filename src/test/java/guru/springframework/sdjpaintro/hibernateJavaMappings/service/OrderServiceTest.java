@@ -2,13 +2,13 @@ package guru.springframework.sdjpaintro.hibernateJavaMappings.service;
 
 import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.ProductRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,19 +23,12 @@ class OrderServiceTest {
     @Autowired
     private ProductRepository productRepository;
 
-    private Product product;
-
-    @BeforeEach
-    void saveProduct() {
-        Product radiusPump = new Product("radius pump", ProductStatus.NEW);
-        product = productRepository.saveAndFlush(radiusPump);
-    }
-
     @Test
     @Transactional
     void saveOrderHeader() {
         Address billingAddress = createBillingAddress();
         Address shippingAddress = createShippingAddress();
+        Product product = productRepository.getByDescription("PRODUCT1");
         OrderLine orderLine = new OrderLine(5, product);
 
         OrderHeader saved = orderService.saveOrderHeader("customer",
@@ -58,12 +51,18 @@ class OrderServiceTest {
                 .allMatch(ol -> ol.getId() != null);
         //product
         assertThat(fetched.getOrderLines())
-                .withFailMessage("All order line products should have non null ids.")
+                .withFailMessage("All order line products should have descriptions.")
                 .allMatch(ol -> ol.getProduct().getId() != null);
         assertThat(fetched.getOrderLines())
-                .withFailMessage("All order line products should have non null ids.")
-                .anyMatch(ol -> ol.getProduct().getDescription().equals("radius pump")
+                .anyMatch(ol -> ol.getProduct().getDescription().equals("PRODUCT1")
                         && ol.getProduct().getProductStatus().equals(ProductStatus.NEW));
+        //category
+        assertThat(fetched.getOrderLines().stream()
+                .map(o -> o.getProduct().getCategories())
+                .flatMap(Collection::stream)
+                .anyMatch(c -> c.getDescription().equals("CAT1") || c.getDescription().equals("CAT2")))
+                .withFailMessage("Products should have correct categories")
+                .isTrue();
     }
 
     private static Address createShippingAddress() {

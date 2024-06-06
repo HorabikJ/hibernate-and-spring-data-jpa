@@ -1,3 +1,5 @@
+-- This file is for creating the database structure/tables. Spring default location for this file is 
+-- `resources/schema.sql`.
 drop table if exists book;
 drop table if exists book_seq;
 

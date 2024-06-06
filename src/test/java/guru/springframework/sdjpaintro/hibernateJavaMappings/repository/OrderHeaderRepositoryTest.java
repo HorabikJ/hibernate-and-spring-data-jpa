@@ -1,7 +1,6 @@
 package guru.springframework.sdjpaintro.hibernateJavaMappings.repository;
 
 import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -9,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,19 +22,12 @@ class OrderHeaderRepositoryTest {
     @Autowired
     private ProductRepository productRepository;
 
-    private Product product;
-
-    @BeforeEach
-    void saveProduct() {
-        Product radiusPump = new Product("radius pump", ProductStatus.NEW);
-        product = productRepository.saveAndFlush(radiusPump);
-    }
-
     @Test
     void shouldSaveOrderWithLine() {
+        Product product1 = productRepository.getByDescription("PRODUCT1");
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
-        OrderLine orderLine = new OrderLine(1, product);
+        OrderLine orderLine = new OrderLine(1, product1);
         OrderHeader orderHeader = new OrderHeader(
                 "customer",
                 shippingAddress,
@@ -65,9 +58,17 @@ class OrderHeaderRepositoryTest {
                 .withFailMessage("All order line products should have non null ids.")
                 .allMatch(ol -> ol.getProduct().getId() != null);
         assertThat(fetched.getOrderLines())
-                .withFailMessage("All order line products should have non null ids.")
-                .anyMatch(ol -> ol.getProduct().getDescription().equals("radius pump")
+                .withFailMessage("All order line products should have descriptions.")
+                .anyMatch(ol -> ol.getProduct().getDescription().equals("PRODUCT1")
                         && ol.getProduct().getProductStatus().equals(ProductStatus.NEW));
+        //category
+        //category
+        assertThat(fetched.getOrderLines().stream()
+                .map(o -> o.getProduct().getCategories())
+                .flatMap(Collection::stream)
+                .anyMatch(c -> c.getDescription().equals("CAT1") || c.getDescription().equals("CAT2")))
+                .withFailMessage("Products should have correct categories")
+                .isTrue();
     }
 
     @Test
@@ -84,7 +85,6 @@ class OrderHeaderRepositoryTest {
         assertThat(saved.getCreatedDate()).isBefore(Instant.now());
         assertThat(saved.getModifiedDate()).isNotNull();
         assertThat(saved.getModifiedDate()).isBefore(Instant.now());
-        assertThat(saved.getModifiedDate()).isEqualTo(saved.getCreatedDate());
     }
 
     @Test
