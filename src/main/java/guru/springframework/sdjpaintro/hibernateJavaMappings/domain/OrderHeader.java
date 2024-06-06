@@ -3,6 +3,7 @@ package guru.springframework.sdjpaintro.hibernateJavaMappings.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @AttributeOverrides({
@@ -32,7 +33,6 @@ import java.util.Set;
                 column = @Column(name = "billing_zip_code"))})
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
@@ -47,6 +47,22 @@ public class OrderHeader extends BaseEntity {
     private OrderStatus orderStatus;
     @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST) //bidirectional
     @EqualsAndHashCode.Exclude
-    private Set<OrderLine> orderLines;
+    private Set<OrderLine> orderLines = new HashSet<>();
+
+    public OrderHeader(String customer, Address shippingAddress, Address billingAddress, OrderStatus orderStatus) {
+        this.customer = customer;
+        this.shippingAddress = shippingAddress;
+        this.billingAddress = billingAddress;
+        this.orderStatus = orderStatus;
+    }
+
+    public void associateOrderLine(OrderLine orderLine) {
+        orderLines.add(orderLine);
+        orderLine.setOrderHeader(this);
+    }
+
+    public void associateOrderLine(Set<OrderLine> orderLines) {
+        orderLines.forEach(this::associateOrderLine);
+    }
 
 }

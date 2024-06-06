@@ -1,7 +1,6 @@
 package guru.springframework.sdjpaintro.hibernateJavaMappings.repository;
 
 import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
-import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,9 +39,8 @@ class OrderHeaderRepositoryTest {
                 "customer",
                 shippingAddress,
                 billingAddress,
-                OrderStatus.NEW,
-                Set.of(orderLine));
-        orderLine.setOrderHeader(orderHeader);
+                OrderStatus.NEW);
+        orderHeader.associateOrderLine(orderLine);
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
         orderHeaderRepository.flush();
@@ -77,8 +74,7 @@ class OrderHeaderRepositoryTest {
     void shouldSaveOrderHeader() {
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
-        OrderHeader orderHeader = new OrderHeader("customer", shippingAddress, billingAddress, OrderStatus.NEW,
-                Sets.newHashSet());
+        OrderHeader orderHeader = new OrderHeader("customer", shippingAddress, billingAddress, OrderStatus.NEW);
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
 
@@ -95,8 +91,7 @@ class OrderHeaderRepositoryTest {
     void shouldModifyOrderHeader() throws Exception {
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
-        OrderHeader orderHeader = new OrderHeader("customer", shippingAddress, billingAddress, OrderStatus.NEW,
-                Sets.newHashSet());
+        OrderHeader orderHeader = new OrderHeader("customer", shippingAddress, billingAddress, OrderStatus.NEW);
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
         orderHeaderRepository.flush();

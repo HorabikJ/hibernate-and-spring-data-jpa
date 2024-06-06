@@ -30,8 +30,8 @@ public class OrderService {
                 customer,
                 shippingAddress,
                 billingAddress,
-                OrderStatus.NEW,
-                Set.copyOf(orderLines));
+                OrderStatus.NEW);
+        orderHeader.associateOrderLine(orderLines);
         return orderHeaderRepository.save(orderHeader);
     }
 
