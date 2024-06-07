@@ -2,6 +2,8 @@ package guru.springframework.sdjpaintro.hibernateJavaMappings.service;
 
 import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.CustomerRepository;
+import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.OrderApprovalRepository;
+import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.OrderLineRepository;
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.ProductRepository;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,6 +31,11 @@ class OrderHeaderServiceTest {
     private ProductRepository productRepository;
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private OrderLineRepository orderLineRepository;
+    @Autowired
+    private OrderApprovalRepository orderApprovalRepository;
 
     @Test
     @Transactional
@@ -82,7 +91,7 @@ class OrderHeaderServiceTest {
 
     @Test
     @Transactional
-    public void deleteOrderHeader() {
+    public void deleteOrderHeaderAndCascadedEntities() {
         Address billingAddress = createBillingAddress();
         Address shippingAddress = createShippingAddress();
 
@@ -91,17 +100,26 @@ class OrderHeaderServiceTest {
         Product product = productRepository.getByDescription("PRODUCT1");
         List<ImmutablePair<Long, Integer>> productQuantityList = List.of(ImmutablePair.of(product.getId(), 5));
 
-        OrderHeader saved = orderService.saveOrderHeader(
+        OrderHeader savedOrderHeader = orderService.saveOrderHeader(
                 customer.getId(),
                 billingAddress,
                 shippingAddress,
                 productQuantityList,
                 "approver name");
 
-        orderService.deleteOrderHeader(saved.getId());
+        orderService.deleteOrderHeader(savedOrderHeader.getId());
 
-        assertThatThrownBy(() -> orderService.fetchOrderHeaderById(saved.getId()))
+        //order header
+        assertThatThrownBy(() -> orderService.fetchOrderHeaderById(savedOrderHeader.getId()))
                 .isInstanceOf(JpaObjectRetrievalFailureException.class);
+
+        //order lines
+        Set<Long> deletedOrderLinesIds = savedOrderHeader.getOrderLines().stream().map(BaseEntity::getId).collect(Collectors.toSet());
+        assertThat(orderLineRepository.findAllById(deletedOrderLinesIds)).isEmpty();
+
+        //order approval
+        assertThat(orderApprovalRepository.findById(savedOrderHeader.getOrderApproval().getId())).isEmpty();
+
     }
 
     private static Address createShippingAddress() {

@@ -49,8 +49,11 @@ public class OrderHeader extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-
-    @OneToOne(cascade = CascadeType.PERSIST) //unidirectional
+//  WE can use `orphanRemoval = true` to delete OrderApproval when deleting OrderHeader. As this is unidirectional 
+//  relation OrderHeader -> OrderApproval, OrderApproval's do not have a relation to OrderHeader, so ther is a 
+//  possibility to delete OrderHeader without deleting its OrderApproval. It is not a good practice, so we want to 
+//  delete OrderApproval as well. If we used `CascadeType.REMOVE` the result would be the same. 
+    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true) //unidirectional
     private OrderApproval orderApproval;
 
     @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}) //bidirectional

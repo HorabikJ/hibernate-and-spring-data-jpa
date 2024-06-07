@@ -29,6 +29,8 @@ class OrderHeaderRepositoryTest {
     private CustomerRepository customerRepository;
     @Autowired
     private OrderLineRepository orderLineRepository;
+    @Autowired
+    private OrderApprovalRepository orderApprovalRepository;
 
     private Customer customer;
 
@@ -92,7 +94,7 @@ class OrderHeaderRepositoryTest {
     }
 
     @Test
-    void shouldDeleteOrderHeader() {
+    void shouldDeleteOrderHeaderAndCascadedEntitiesAsWell() {
         // CAT1 and PRODUCT1 are inserted into db by flyway script
         Product product = productRepository.getByDescription("PRODUCT1");
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
@@ -112,11 +114,16 @@ class OrderHeaderRepositoryTest {
         orderHeaderRepository.deleteById(saved.getId());
         orderHeaderRepository.flush();
 
+        //order header
         Optional<OrderHeader> deletedOrderHeaderOptional = orderHeaderRepository.findById(saved.getId());
         assertThat(deletedOrderHeaderOptional).isEmpty();
 
+        //order lines
         Set<Long> deletedOrderLinesIds = saved.getOrderLines().stream().map(BaseEntity::getId).collect(Collectors.toSet());
         assertThat(orderLineRepository.findAllById(deletedOrderLinesIds)).isEmpty();
+
+        //order approval
+        assertThat(orderApprovalRepository.findById(saved.getOrderApproval().getId())).isEmpty();
     }
 
     @Test
