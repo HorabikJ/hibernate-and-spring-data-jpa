@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class OrderService {
+public class OrderHeaderService {
 
     private OrderHeaderRepository orderHeaderRepository;
     private CustomerRepository customerRepository;
@@ -45,6 +45,11 @@ public class OrderService {
                 approverName);
         orderHeader.associateOrderLine(Set.copyOf(orderLines));
         return orderHeaderRepository.save(orderHeader);
+    }
+
+    @Transactional
+    public void deleteOrderHeader(Long id) {
+        orderHeaderRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)

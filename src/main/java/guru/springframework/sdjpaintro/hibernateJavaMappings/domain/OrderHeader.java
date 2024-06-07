@@ -53,7 +53,7 @@ public class OrderHeader extends BaseEntity {
     @OneToOne(cascade = CascadeType.PERSIST) //unidirectional
     private OrderApproval orderApproval;
 
-    @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST) //bidirectional
+    @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}) //bidirectional
     @EqualsAndHashCode.Exclude
     private Set<OrderLine> orderLines = new HashSet<>();
 

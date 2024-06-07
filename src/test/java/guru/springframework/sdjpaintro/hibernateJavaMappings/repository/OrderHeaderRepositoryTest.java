@@ -10,6 +10,9 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,6 +27,8 @@ class OrderHeaderRepositoryTest {
     private ProductRepository productRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private OrderLineRepository orderLineRepository;
 
     private Customer customer;
 
@@ -34,11 +39,12 @@ class OrderHeaderRepositoryTest {
     }
 
     @Test
-    void shouldSaveOrderWithLine() {
-        Product product1 = productRepository.getByDescription("PRODUCT1");
+    void shouldSaveOrderWithOrderLine() {
+        // CAT1 and PRODUCT1 are inserted into db by flyway script
+        Product product = productRepository.getByDescription("PRODUCT1");
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
-        OrderLine orderLine = new OrderLine(1, product1);
+        OrderLine orderLine = new OrderLine(1, product);
         OrderHeader orderHeader = new OrderHeader(
                 customer,
                 shippingAddress,
@@ -83,6 +89,34 @@ class OrderHeaderRepositoryTest {
         //order approval
         assertThat(fetched.getOrderApproval().getId()).isNotNull();
         assertThat(fetched.getOrderApproval().getApprovedBy()).isEqualTo("approver name");
+    }
+
+    @Test
+    void shouldDeleteOrderHeader() {
+        // CAT1 and PRODUCT1 are inserted into db by flyway script
+        Product product = productRepository.getByDescription("PRODUCT1");
+        Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
+        Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
+        OrderLine orderLine = new OrderLine(1, product);
+        OrderHeader orderHeader = new OrderHeader(
+                customer,
+                shippingAddress,
+                billingAddress,
+                OrderStatus.NEW,
+                "approver name");
+        orderHeader.associateOrderLine(orderLine);
+
+        OrderHeader saved = orderHeaderRepository.saveAndFlush(orderHeader);
+        orderHeaderRepository.flush();
+
+        orderHeaderRepository.deleteById(saved.getId());
+        orderHeaderRepository.flush();
+
+        Optional<OrderHeader> deletedOrderHeaderOptional = orderHeaderRepository.findById(saved.getId());
+        assertThat(deletedOrderHeaderOptional).isEmpty();
+
+        Set<Long> deletedOrderLinesIds = saved.getOrderLines().stream().map(BaseEntity::getId).collect(Collectors.toSet());
+        assertThat(orderLineRepository.findAllById(deletedOrderLinesIds)).isEmpty();
     }
 
     @Test

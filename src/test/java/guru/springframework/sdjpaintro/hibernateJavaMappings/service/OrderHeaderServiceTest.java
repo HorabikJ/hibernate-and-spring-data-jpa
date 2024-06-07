@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +15,14 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @ActiveProfiles({"local"})
-class OrderServiceTest {
+class OrderHeaderServiceTest {
 
     @Autowired
-    private OrderService orderService;
+    private OrderHeaderService orderService;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -76,6 +78,30 @@ class OrderServiceTest {
         //order approval
         assertThat(fetched.getOrderApproval().getId()).isNotNull();
         assertThat(fetched.getOrderApproval().getApprovedBy()).isEqualTo("approver name");
+    }
+
+    @Test
+    @Transactional
+    public void deleteOrderHeader() {
+        Address billingAddress = createBillingAddress();
+        Address shippingAddress = createShippingAddress();
+
+        Customer customer = customerRepository.save(new Customer("name", shippingAddress, "phone", "email"));
+
+        Product product = productRepository.getByDescription("PRODUCT1");
+        List<ImmutablePair<Long, Integer>> productQuantityList = List.of(ImmutablePair.of(product.getId(), 5));
+
+        OrderHeader saved = orderService.saveOrderHeader(
+                customer.getId(),
+                billingAddress,
+                shippingAddress,
+                productQuantityList,
+                "approver name");
+
+        orderService.deleteOrderHeader(saved.getId());
+
+        assertThatThrownBy(() -> orderService.fetchOrderHeaderById(saved.getId()))
+                .isInstanceOf(JpaObjectRetrievalFailureException.class);
     }
 
     private static Address createShippingAddress() {

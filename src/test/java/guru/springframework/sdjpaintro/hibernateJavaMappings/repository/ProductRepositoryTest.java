@@ -19,6 +19,7 @@ class ProductRepositoryTest {
 
     @Test
     void getCategoryByDescription() {
+        // CAT1 and PRODUCT1 is inserted into db by flyway script
         Product product = productRepository.getByDescription("PRODUCT1");
 
         assertThat(product).isNotNull();
