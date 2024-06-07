@@ -16,6 +16,7 @@ public class Product extends BaseEntity {
     private String description;
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
+    @EqualsAndHashCode.Exclude
     @ManyToMany //bidirectional
     @JoinTable(name = "product_category",
             joinColumns = @JoinColumn(name = "product_id"),
