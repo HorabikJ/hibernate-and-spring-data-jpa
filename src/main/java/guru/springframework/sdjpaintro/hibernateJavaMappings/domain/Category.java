@@ -18,7 +18,7 @@ public class Category extends BaseEntity {
 
     private String description;
     @EqualsAndHashCode.Exclude
-    @ManyToMany //bidirectional
+    @ManyToMany
     @JoinTable(name = "product_category",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))

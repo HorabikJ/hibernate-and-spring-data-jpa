@@ -38,7 +38,7 @@ import java.util.Set;
 @Setter
 public class OrderHeader extends BaseEntity {
 
-    @ManyToOne //unidirectional
+    @ManyToOne
     private Customer customer;
 
     @Embedded
@@ -49,14 +49,19 @@ public class OrderHeader extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-//  WE can use `orphanRemoval = true` to delete OrderApproval when deleting OrderHeader. As this is unidirectional 
-//  relation OrderHeader -> OrderApproval, OrderApproval's do not have a relation to OrderHeader, so ther is a 
+    
+//  We can use `orphanRemoval = true` to delete OrderApproval when deleting OrderHeader. As this is unidirectional 
+//  relation OrderHeader -> OrderApproval, OrderApproval's do not have a relation to OrderHeader, so there is a 
 //  possibility to delete OrderHeader without deleting its OrderApproval. It is not a good practice, so we want to 
 //  delete OrderApproval as well. If we used `CascadeType.REMOVE` the result would be the same. 
-    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true) //unidirectional
-    private OrderApproval orderApproval;
+//    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true) //unidirectional
+//    private OrderApproval orderApproval;
 
-    @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}) //bidirectional
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @EqualsAndHashCode.Exclude
+    private OrderApproval orderApproval;
+    
+    @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @EqualsAndHashCode.Exclude
     private Set<OrderLine> orderLines = new HashSet<>();
 
@@ -66,7 +71,8 @@ public class OrderHeader extends BaseEntity {
         this.shippingAddress = shippingAddress;
         this.billingAddress = billingAddress;
         this.orderStatus = orderStatus;
-        this.orderApproval = new OrderApproval(approvedBy);
+        // helper method do set OrderHeader in OrderApproval via this
+        this.orderApproval = new OrderApproval(approvedBy, this);
     }
 
     public void associateOrderLine(OrderLine orderLine) {

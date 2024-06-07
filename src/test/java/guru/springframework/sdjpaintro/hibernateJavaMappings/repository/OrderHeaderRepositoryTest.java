@@ -65,32 +65,34 @@ class OrderHeaderRepositoryTest {
                 .withFailMessage("All order lines should have non null ids.")
                 .allMatch(ol -> ol.getId() != null);
 
-        OrderHeader fetched = orderHeaderRepository.getById(saved.getId());
+        OrderHeader fetchedOrderHeader = orderHeaderRepository.getById(saved.getId());
         //order line
-        assertThat(fetched).isNotNull();
-        assertThat(fetched.getId()).isNotNull();
-        assertThat(fetched.getOrderLines()).size().isEqualTo(1);
+        assertThat(fetchedOrderHeader).isNotNull();
+        assertThat(fetchedOrderHeader.getId()).isNotNull();
+        assertThat(fetchedOrderHeader.getOrderLines()).size().isEqualTo(1);
         assertThat(saved.getOrderLines())
                 .withFailMessage("All order lines should have non null ids.")
                 .allMatch(ol -> ol.getId() != null);
         //product
-        assertThat(fetched.getOrderLines())
+        assertThat(fetchedOrderHeader.getOrderLines())
                 .withFailMessage("All order line products should have non null ids.")
                 .allMatch(ol -> ol.getProduct().getId() != null);
-        assertThat(fetched.getOrderLines())
+        assertThat(fetchedOrderHeader.getOrderLines())
                 .withFailMessage("All order line products should have descriptions.")
                 .anyMatch(ol -> ol.getProduct().getDescription().equals("PRODUCT1")
                         && ol.getProduct().getProductStatus().equals(ProductStatus.NEW));
         //category
-        assertThat(fetched.getOrderLines().stream()
+        assertThat(fetchedOrderHeader.getOrderLines().stream()
                 .map(o -> o.getProduct().getCategories())
                 .flatMap(Collection::stream)
                 .anyMatch(c -> c.getDescription().equals("CAT1") || c.getDescription().equals("CAT2")))
                 .withFailMessage("Products should have correct categories")
                 .isTrue();
         //order approval
-        assertThat(fetched.getOrderApproval().getId()).isNotNull();
-        assertThat(fetched.getOrderApproval().getApprovedBy()).isEqualTo("approver name");
+        assertThat(fetchedOrderHeader.getOrderApproval().getId()).isNotNull();
+        assertThat(fetchedOrderHeader.getOrderApproval().getApprovedBy()).isEqualTo("approver name");
+        assertThat(fetchedOrderHeader.getOrderApproval().getOrderHeader()).isNotNull();
+        assertThat(fetchedOrderHeader.getOrderApproval().getOrderHeader().getId()).isEqualTo(fetchedOrderHeader.getId());
     }
 
     @Test
@@ -131,7 +133,8 @@ class OrderHeaderRepositoryTest {
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
         OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW, "approver name");
-
+        
+        
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
 
         assertThat(saved).isNotNull();
@@ -140,11 +143,14 @@ class OrderHeaderRepositoryTest {
         assertThat(saved.getCreatedDate()).isBefore(Instant.now());
         assertThat(saved.getModifiedDate()).isNotNull();
         assertThat(saved.getModifiedDate()).isBefore(Instant.now());
-
+        //customer
         assertThat(saved.getCustomer().getId()).isNotNull();
-
+        //order approval
         assertThat(saved.getOrderApproval().getId()).isNotNull();
-
+        assertThat(saved.getOrderApproval().getApprovedBy()).isEqualTo("approver name");
+        assertThat(saved.getOrderApproval().getOrderHeader()).isNotNull();
+        assertThat(saved.getOrderApproval().getOrderHeader().getId()).isEqualTo(saved.getId());
+        //order lines
         assertThat(saved.getOrderLines()).allMatch(ol -> ol.getId() != null);
     }
 

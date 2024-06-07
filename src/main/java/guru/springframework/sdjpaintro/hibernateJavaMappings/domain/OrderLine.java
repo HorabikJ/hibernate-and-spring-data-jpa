@@ -13,9 +13,9 @@ import lombok.*;
 public class OrderLine extends BaseEntity {
 
     private Integer quantityOrdered;
-    @ManyToOne //bidirectional
+    @ManyToOne
     private OrderHeader orderHeader;
-    @ManyToOne //unidirectional
+    @ManyToOne
     private Product product;
 
     public OrderLine(Integer quantityOrdered, Product product) {

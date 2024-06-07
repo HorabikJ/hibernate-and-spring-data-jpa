@@ -23,7 +23,7 @@ public class Customer extends BaseEntity {
     private String phone;
     private String email;
 
-    @OneToMany(mappedBy = "customer") //bidirectional
+    @OneToMany(mappedBy = "customer")
     @EqualsAndHashCode.Exclude
     private Set<OrderHeader> orderHeaders = new LinkedHashSet<>();
 
