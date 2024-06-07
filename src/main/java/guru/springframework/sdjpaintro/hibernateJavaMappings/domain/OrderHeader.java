@@ -38,23 +38,32 @@ import java.util.Set;
 @Setter
 public class OrderHeader extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne //unidirectional
     private Customer customer;
+
     @Embedded
     private Address shippingAddress;
+
     @Embedded
     private Address billingAddress;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+    @OneToOne(cascade = CascadeType.PERSIST) //unidirectional
+    private OrderApproval orderApproval;
+
     @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST) //bidirectional
     @EqualsAndHashCode.Exclude
     private Set<OrderLine> orderLines = new HashSet<>();
 
-    public OrderHeader(Customer customer, Address shippingAddress, Address billingAddress, OrderStatus orderStatus) {
+    public OrderHeader(Customer customer, Address shippingAddress, Address billingAddress, OrderStatus orderStatus,
+                       String approvedBy) {
         this.customer = customer;
         this.shippingAddress = shippingAddress;
         this.billingAddress = billingAddress;
         this.orderStatus = orderStatus;
+        this.orderApproval = new OrderApproval(approvedBy);
     }
 
     public void associateOrderLine(OrderLine orderLine) {

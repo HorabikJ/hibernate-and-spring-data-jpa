@@ -41,7 +41,8 @@ class OrderServiceTest {
                 customer.getId(),
                 billingAddress,
                 shippingAddress,
-                productQuantityList);
+                productQuantityList,
+                "approver name");
 
         OrderHeader fetched = orderService.fetchOrderHeaderById(saved.getId());
         //order header
@@ -72,6 +73,9 @@ class OrderServiceTest {
         //customer
         assertThat(fetched.getCustomer().getName()).isEqualTo("name");
         assertThat(fetched.getCustomer().getEmail()).isEqualTo("email");
+        //order approval
+        assertThat(fetched.getOrderApproval().getId()).isNotNull();
+        assertThat(fetched.getOrderApproval().getApprovedBy()).isEqualTo("approver name");
     }
 
     private static Address createShippingAddress() {

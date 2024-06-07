@@ -1,10 +1,7 @@
 package guru.springframework.sdjpaintro.hibernateJavaMappings.service;
 
 import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.CustomerRepository;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.OrderHeaderRepository;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.OrderLineRepository;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.ProductRepository;
+import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.*;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
@@ -22,13 +19,16 @@ public class OrderService {
     private CustomerRepository customerRepository;
     private ProductRepository productRepository;
     private OrderLineRepository orderLineRepository;
+    private OrderApprovalRepository orderApprovalRepository;
 
     @Transactional
     public OrderHeader saveOrderHeader(Long customerId,
                                        Address billingAddress,
                                        Address shippingAddress,
-                                       List<ImmutablePair<Long, Integer>> productQuantityList) {
-//      We do not have to first save Set<OrderLine>, as this field has CascadeType.PERSIST in OrderHeader entity. 
+                                       List<ImmutablePair<Long, Integer>> productQuantityList,
+                                       String approverName) {
+//      We do not have to first save Set<OrderLine>, as this field has CascadeType.PERSIST in OrderHeader entity.
+//      The same with OrderApproval entity.        
 //      List<OrderLine> savedOrderLines = orderLineRepository.saveAll(orderLines);
 
         Customer customer = customerRepository.getById(customerId);
@@ -41,7 +41,8 @@ public class OrderService {
                 customer,
                 shippingAddress,
                 billingAddress,
-                OrderStatus.NEW);
+                OrderStatus.NEW,
+                approverName);
         orderHeader.associateOrderLine(Set.copyOf(orderLines));
         return orderHeaderRepository.save(orderHeader);
     }

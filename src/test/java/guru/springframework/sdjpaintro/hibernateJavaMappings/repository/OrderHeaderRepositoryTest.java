@@ -43,7 +43,8 @@ class OrderHeaderRepositoryTest {
                 customer,
                 shippingAddress,
                 billingAddress,
-                OrderStatus.NEW);
+                OrderStatus.NEW,
+                "approver name");
         orderHeader.associateOrderLine(orderLine);
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
@@ -73,20 +74,22 @@ class OrderHeaderRepositoryTest {
                 .anyMatch(ol -> ol.getProduct().getDescription().equals("PRODUCT1")
                         && ol.getProduct().getProductStatus().equals(ProductStatus.NEW));
         //category
-        //category
         assertThat(fetched.getOrderLines().stream()
                 .map(o -> o.getProduct().getCategories())
                 .flatMap(Collection::stream)
                 .anyMatch(c -> c.getDescription().equals("CAT1") || c.getDescription().equals("CAT2")))
                 .withFailMessage("Products should have correct categories")
                 .isTrue();
+        //order approval
+        assertThat(fetched.getOrderApproval().getId()).isNotNull();
+        assertThat(fetched.getOrderApproval().getApprovedBy()).isEqualTo("approver name");
     }
 
     @Test
     void shouldSaveOrderHeader() {
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
-        OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW);
+        OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW, "approver name");
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
 
@@ -96,13 +99,19 @@ class OrderHeaderRepositoryTest {
         assertThat(saved.getCreatedDate()).isBefore(Instant.now());
         assertThat(saved.getModifiedDate()).isNotNull();
         assertThat(saved.getModifiedDate()).isBefore(Instant.now());
+
+        assertThat(saved.getCustomer().getId()).isNotNull();
+
+        assertThat(saved.getOrderApproval().getId()).isNotNull();
+
+        assertThat(saved.getOrderLines()).allMatch(ol -> ol.getId() != null);
     }
 
     @Test
     void shouldModifyOrderHeader() throws Exception {
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
-        OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW);
+        OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW, "approver name");
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
         orderHeaderRepository.flush();
