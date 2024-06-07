@@ -1,6 +1,7 @@
 package guru.springframework.sdjpaintro.hibernateJavaMappings.repository;
 
 import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -21,6 +22,16 @@ class OrderHeaderRepositoryTest {
     private OrderHeaderRepository orderHeaderRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    private Customer customer;
+
+    @BeforeEach
+    public void saveCustomer() {
+        Address address = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
+        customer = customerRepository.save(new Customer("name", address, "phone", "email"));
+    }
 
     @Test
     void shouldSaveOrderWithLine() {
@@ -29,7 +40,7 @@ class OrderHeaderRepositoryTest {
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
         OrderLine orderLine = new OrderLine(1, product1);
         OrderHeader orderHeader = new OrderHeader(
-                "customer",
+                customer,
                 shippingAddress,
                 billingAddress,
                 OrderStatus.NEW);
@@ -75,7 +86,7 @@ class OrderHeaderRepositoryTest {
     void shouldSaveOrderHeader() {
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
-        OrderHeader orderHeader = new OrderHeader("customer", shippingAddress, billingAddress, OrderStatus.NEW);
+        OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW);
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
 
@@ -91,11 +102,11 @@ class OrderHeaderRepositoryTest {
     void shouldModifyOrderHeader() throws Exception {
         Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
         Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
-        OrderHeader orderHeader = new OrderHeader("customer", shippingAddress, billingAddress, OrderStatus.NEW);
+        OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW);
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
         orderHeaderRepository.flush();
-        saved.setCustomer("new Customer");
+        saved.setOrderStatus(OrderStatus.COMPLETE);
 
         Thread.sleep(500L);
 
@@ -104,7 +115,7 @@ class OrderHeaderRepositoryTest {
         OrderHeader fetched = orderHeaderRepository.findById(updated.getId()).get();
 
         assertThat(fetched.getId()).isEqualTo(saved.getId());
-        assertThat(fetched.getCustomer()).isEqualTo("new Customer");
+        assertThat(fetched.getCustomer().getName()).isEqualTo("name");
         // When this test is @Transactional it fails - todo investigate why -> we need to flush() after each save, then 
         // correct update timestamps are set in entities in hibernate session. Without flushing, OrderHeader entity 
         // is first created and then modified modified in hibernate session only, not in db. We save and modify the 

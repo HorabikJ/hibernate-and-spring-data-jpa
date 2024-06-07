@@ -38,7 +38,8 @@ import java.util.Set;
 @Setter
 public class OrderHeader extends BaseEntity {
 
-    private String customer;
+    @ManyToOne
+    private Customer customer;
     @Embedded
     private Address shippingAddress;
     @Embedded
@@ -49,7 +50,7 @@ public class OrderHeader extends BaseEntity {
     @EqualsAndHashCode.Exclude
     private Set<OrderLine> orderLines = new HashSet<>();
 
-    public OrderHeader(String customer, Address shippingAddress, Address billingAddress, OrderStatus orderStatus) {
+    public OrderHeader(Customer customer, Address shippingAddress, Address billingAddress, OrderStatus orderStatus) {
         this.customer = customer;
         this.shippingAddress = shippingAddress;
         this.billingAddress = billingAddress;

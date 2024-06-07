@@ -20,7 +20,6 @@ public class ProductCategoryService {
         this.productRepository = productRepository;
     }
 
-    //todo write unit test for this
     @Transactional
     void associateProductWithCategory(Long categroyId, Long productId) {
         Category category = categoryRepository.getById(categroyId);

@@ -1,7 +1,9 @@
 package guru.springframework.sdjpaintro.hibernateJavaMappings.service;
 
 import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
+import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.CustomerRepository;
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.ProductRepository;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,28 +21,32 @@ class OrderServiceTest {
 
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Test
     @Transactional
     void saveOrderHeader() {
         Address billingAddress = createBillingAddress();
         Address shippingAddress = createShippingAddress();
-        Product product = productRepository.getByDescription("PRODUCT1");
-        OrderLine orderLine = new OrderLine(5, product);
 
-        OrderHeader saved = orderService.saveOrderHeader("customer",
+        Customer customer = customerRepository.save(new Customer("name", shippingAddress, "phone", "email"));
+
+        Product product = productRepository.getByDescription("PRODUCT1");
+        List<ImmutablePair<Long, Integer>> productQuantityList = List.of(ImmutablePair.of(product.getId(), 5));
+
+        OrderHeader saved = orderService.saveOrderHeader(
+                customer.getId(),
                 billingAddress,
                 shippingAddress,
-                Set.of(orderLine));
+                productQuantityList);
 
         OrderHeader fetched = orderService.fetchOrderHeaderById(saved.getId());
         //order header
         assertThat(fetched).isNotNull();
         assertThat(fetched.getId()).isNotNull();
-        assertThat(fetched.getCustomer()).isEqualTo("customer");
         assertThat(fetched.getOrderStatus()).isEqualTo(OrderStatus.NEW);
         assertThat(fetched.getBillingAddress().getAddress()).isEqualTo("billing address");
         assertThat(fetched.getShippingAddress().getAddress()).isEqualTo("shipping address");
@@ -63,6 +69,9 @@ class OrderServiceTest {
                 .anyMatch(c -> c.getDescription().equals("CAT1") || c.getDescription().equals("CAT2")))
                 .withFailMessage("Products should have correct categories")
                 .isTrue();
+        //customer
+        assertThat(fetched.getCustomer().getName()).isEqualTo("name");
+        assertThat(fetched.getCustomer().getEmail()).isEqualTo("email");
     }
 
     private static Address createShippingAddress() {
