@@ -1,5 +1,7 @@
 -- This file is for creating the database structure/tables. Spring default location for this file is 
 -- `resources/schema.sql`.
+-- Currently we are not using this file, the usage of this file is disabled by `spring.sql.init.mode=never` property 
+-- in the properties file.
 drop table if exists book;
 drop table if exists book_seq;
 
