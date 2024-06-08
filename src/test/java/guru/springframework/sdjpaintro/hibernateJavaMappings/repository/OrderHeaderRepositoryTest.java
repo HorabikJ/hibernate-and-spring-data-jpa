@@ -1,7 +1,6 @@
 package guru.springframework.sdjpaintro.hibernateJavaMappings.repository;
 
 import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -31,21 +30,23 @@ class OrderHeaderRepositoryTest {
     private OrderLineRepository orderLineRepository;
     @Autowired
     private OrderApprovalRepository orderApprovalRepository;
-
-    private Customer customer;
-
-    @BeforeEach
-    public void saveCustomer() {
-        Address address = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
-        customer = customerRepository.save(new Customer("name", address, "phone", "email"));
-    }
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Test
     void shouldSaveOrderWithOrderLine() {
-        // CAT1 and PRODUCT1 are inserted into db by flyway script
-        Product product = productRepository.getByDescription("PRODUCT1");
-        Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
-        Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
+        Address billingAddress = createBillingAddress();
+        Address shippingAddress = createShippingAddress();
+        Address address = createCustomerAddress();
+        Customer customer = customerRepository.save(new Customer("name", address, "phone", "email"));
+
+        Product product = productRepository.saveAndFlush(new Product("super product", ProductStatus.NEW));
+        Category category = categoryRepository.saveAndFlush(new Category("super category"));
+        product.associateCategory(category);
+        category.associateProduct(product);
+        productRepository.save(product);
+        categoryRepository.save(category);
+        
         OrderLine orderLine = new OrderLine(1, product);
         OrderHeader orderHeader = new OrderHeader(
                 customer,
@@ -56,7 +57,6 @@ class OrderHeaderRepositoryTest {
         orderHeader.associateOrderLine(orderLine);
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
-        orderHeaderRepository.flush();
         //order header
         assertThat(saved).isNotNull();
         assertThat(saved.getId()).isNotNull();
@@ -79,13 +79,13 @@ class OrderHeaderRepositoryTest {
                 .allMatch(ol -> ol.getProduct().getId() != null);
         assertThat(fetchedOrderHeader.getOrderLines())
                 .withFailMessage("All order line products should have descriptions.")
-                .anyMatch(ol -> ol.getProduct().getDescription().equals("PRODUCT1")
+                .anyMatch(ol -> ol.getProduct().getDescription().equals("super product")
                         && ol.getProduct().getProductStatus().equals(ProductStatus.NEW));
         //category
         assertThat(fetchedOrderHeader.getOrderLines().stream()
                 .map(o -> o.getProduct().getCategories())
                 .flatMap(Collection::stream)
-                .anyMatch(c -> c.getDescription().equals("CAT1") || c.getDescription().equals("CAT2")))
+                .allMatch(c -> c.getDescription().equals("super category")))
                 .withFailMessage("Products should have correct categories")
                 .isTrue();
         //order approval
@@ -99,8 +99,10 @@ class OrderHeaderRepositoryTest {
     void shouldDeleteOrderHeaderAndCascadedEntitiesAsWell() {
         // CAT1 and PRODUCT1 are inserted into db by flyway script
         Product product = productRepository.getByDescription("PRODUCT1");
-        Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
-        Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
+        Address billingAddress = createBillingAddress();
+        Address shippingAddress = createShippingAddress();
+        Address address = createCustomerAddress();
+        Customer customer = customerRepository.save(new Customer("name", address, "phone", "email"));
         OrderLine orderLine = new OrderLine(1, product);
         OrderHeader orderHeader = new OrderHeader(
                 customer,
@@ -110,11 +112,9 @@ class OrderHeaderRepositoryTest {
                 "approver name");
         orderHeader.associateOrderLine(orderLine);
 
-        OrderHeader saved = orderHeaderRepository.saveAndFlush(orderHeader);
-        orderHeaderRepository.flush();
+        OrderHeader saved = orderHeaderRepository.save(orderHeader);
 
         orderHeaderRepository.deleteById(saved.getId());
-        orderHeaderRepository.flush();
 
         //order header
         Optional<OrderHeader> deletedOrderHeaderOptional = orderHeaderRepository.findById(saved.getId());
@@ -130,12 +130,13 @@ class OrderHeaderRepositoryTest {
 
     @Test
     void shouldSaveOrderHeader() {
-        Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
-        Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
+        Address billingAddress = createBillingAddress();
+        Address shippingAddress = createShippingAddress();
+        Address address = createCustomerAddress();
+        Customer customer = customerRepository.save(new Customer("name", address, "phone", "email"));
         OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW, "approver name");
         
-        
-        OrderHeader saved = orderHeaderRepository.save(orderHeader);
+        OrderHeader saved = orderHeaderRepository.saveAndFlush(orderHeader);
 
         assertThat(saved).isNotNull();
         assertThat(saved.getId()).isNotNull();
@@ -156,8 +157,10 @@ class OrderHeaderRepositoryTest {
 
     @Test
     void shouldModifyOrderHeader() throws Exception {
-        Address billingAddress = new Address("billing address", "billing city", "billing state", "billing zip code");
-        Address shippingAddress = new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
+        Address billingAddress = createBillingAddress();
+        Address shippingAddress = createShippingAddress();
+        Address address = createCustomerAddress();
+        Customer customer = customerRepository.save(new Customer("name", address, "phone", "email"));
         OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW, "approver name");
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
@@ -179,5 +182,18 @@ class OrderHeaderRepositoryTest {
         // and because of that update and creation timestamps are the same. 
         assertThat(fetched.getCreatedDate()).isBefore(fetched.getModifiedDate());
     }
+
+    private static Address createCustomerAddress() {
+        return new Address("address", "city", "state", "zip code");
+    }
+
+    private static Address createShippingAddress() {
+        return new Address("shipping address", "shipping city", "shipping state", "shipping zip code");
+    }
+
+    private static Address createBillingAddress() {
+        return new Address("billing address", "billing city", "billing state", "billing zip code");
+    }
+
 
 }

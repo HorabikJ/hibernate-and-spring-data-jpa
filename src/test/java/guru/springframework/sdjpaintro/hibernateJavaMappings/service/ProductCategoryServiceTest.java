@@ -28,7 +28,7 @@ class ProductCategoryServiceTest {
     private CategoryRepository categoryRepository;
 
     @Test
-    public void test() {
+    public void associateProductWithCategory() {
         Category category = new Category("category one");
         Product product = new Product("product one", ProductStatus.NEW);
 
