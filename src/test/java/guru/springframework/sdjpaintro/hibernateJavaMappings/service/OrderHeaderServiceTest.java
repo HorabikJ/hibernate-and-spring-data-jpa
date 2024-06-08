@@ -25,13 +25,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @ActiveProfiles({"local"})
 class OrderHeaderServiceTest {
 
+    // It is always better to insert data to db via executing some sql script so before all test execution db is 
+    // loaded with test data. Loading test data to db inside tests is not good practice, but for the sake of 
+    // simplicity we do this here. We can load test data to db by using @Sql annotation on a test method.
+
     @Autowired
     private OrderHeaderService orderService;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
     private CustomerRepository customerRepository;
-
     @Autowired
     private OrderLineRepository orderLineRepository;
     @Autowired

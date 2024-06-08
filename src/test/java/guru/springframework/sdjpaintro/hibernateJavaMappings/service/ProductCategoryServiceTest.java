@@ -20,6 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(ProductCategoryService.class)
 class ProductCategoryServiceTest {
 
+    // It is always better to insert data to db via executing some sql script so before all test execution db is 
+    // loaded with test data. Loading test data to db inside tests is not good practice, but for the sake of 
+    // simplicity we do this here. We can load test data to db by using @Sql annotation on a test method.
+
     @Autowired
     private ProductCategoryService productCategoryService;
     @Autowired
