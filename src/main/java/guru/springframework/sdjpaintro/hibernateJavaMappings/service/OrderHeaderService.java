@@ -5,6 +5,7 @@ import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.*;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,11 +16,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class OrderHeaderService {
 
-    private OrderHeaderRepository orderHeaderRepository;
-    private CustomerRepository customerRepository;
-    private ProductRepository productRepository;
-    private OrderLineRepository orderLineRepository;
-    private OrderApprovalRepository orderApprovalRepository;
+    private final OrderHeaderRepository orderHeaderRepository;
+    private final CustomerRepository customerRepository;
+    private final ProductRepository productRepository;
+    private final OrderLineRepository orderLineRepository;
+    private final OrderApprovalRepository orderApprovalRepository;
+    private final PlatformTransactionManager transactionManager;
 
     @Transactional
     public OrderHeader saveOrderHeader(Long customerId,
