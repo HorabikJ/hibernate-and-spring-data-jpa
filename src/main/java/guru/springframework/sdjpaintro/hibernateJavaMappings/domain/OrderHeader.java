@@ -66,13 +66,14 @@ public class OrderHeader extends BaseEntity {
     private Set<OrderLine> orderLines = new HashSet<>();
 
     public OrderHeader(Customer customer, Address shippingAddress, Address billingAddress, OrderStatus orderStatus,
-                       String approvedBy) {
+                       OrderApproval orderApproval) {
         this.customer = customer;
         this.shippingAddress = shippingAddress;
         this.billingAddress = billingAddress;
         this.orderStatus = orderStatus;
-        // helper method do set OrderHeader in OrderApproval via this
-        this.orderApproval = new OrderApproval(approvedBy, this);
+        this.orderApproval = orderApproval;
+        // Maybe it is not a good practice to call below method in constructor but It is for the sake of simplicity.
+        orderApproval.associateOrderHeader(this);
     }
 
     public void associateOrderLine(OrderLine orderLine) {

@@ -42,7 +42,7 @@ public class OrderHeaderService {
                 shippingAddress,
                 billingAddress,
                 OrderStatus.NEW,
-                approverName);
+                new OrderApproval(approverName));
         orderHeader.associateOrderLine(Set.copyOf(orderLines));
         return orderHeaderRepository.save(orderHeader);
     }

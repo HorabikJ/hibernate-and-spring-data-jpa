@@ -57,7 +57,7 @@ class OrderHeaderRepositoryTest {
                 shippingAddress,
                 billingAddress,
                 OrderStatus.NEW,
-                "approver name");
+                new OrderApproval("approver name"));
         orderHeader.associateOrderLine(orderLine);
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
@@ -113,7 +113,7 @@ class OrderHeaderRepositoryTest {
                 shippingAddress,
                 billingAddress,
                 OrderStatus.NEW,
-                "approver name");
+                new OrderApproval("approver name"));
         orderHeader.associateOrderLine(orderLine);
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
@@ -138,7 +138,7 @@ class OrderHeaderRepositoryTest {
         Address shippingAddress = createShippingAddress();
         Address address = createCustomerAddress();
         Customer customer = customerRepository.save(new Customer("name", address, "phone", "email"));
-        OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW, "approver name");
+        OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW, new OrderApproval("approver name"));
         
         OrderHeader saved = orderHeaderRepository.saveAndFlush(orderHeader);
 
@@ -165,7 +165,7 @@ class OrderHeaderRepositoryTest {
         Address shippingAddress = createShippingAddress();
         Address address = createCustomerAddress();
         Customer customer = customerRepository.save(new Customer("name", address, "phone", "email"));
-        OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW, "approver name");
+        OrderHeader orderHeader = new OrderHeader(customer, shippingAddress, billingAddress, OrderStatus.NEW, new OrderApproval("approver name"));
 
         OrderHeader saved = orderHeaderRepository.save(orderHeader);
         orderHeaderRepository.flush();

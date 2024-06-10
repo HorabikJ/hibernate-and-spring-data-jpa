@@ -6,6 +6,7 @@ import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.Customer
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.OrderHeaderRepository;
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,12 @@ public class EagerVsLazyTest {
 
     private static final List<Long> IDS = new LinkedList<>();
 
+    @Disabled
     @Test
     @Commit
     @Order(1)
+    // To run this test on fresh db simply drop all tables in db using MySQL Workbench, then start the 
+    // SdjpaIntroApplication with the "local" and "clean" profiles and run this test.
     public void setupTestData() {
         // Products inserted via flyway script, I am using those because when I tried to insert products and 
         // categories inside of the test it did not work. 
@@ -55,7 +59,8 @@ public class EagerVsLazyTest {
             Customer customer = new Customer("name" + i, adr, "phone" + i, "email" + i);
             customerRepository.save(customer);
 
-            OrderHeader orderHeader = new OrderHeader(customer, billingAdr, shippingAdr, OrderStatus.NEW, "approved_by" + i);
+            OrderHeader orderHeader = new OrderHeader(customer, billingAdr, shippingAdr, OrderStatus.NEW,
+                    new OrderApproval("approver name" + i));
             Set<OrderLine> orderLines = Set.of(
                     new OrderLine(10 + i, product1),
                     new OrderLine(5 + i, product2));

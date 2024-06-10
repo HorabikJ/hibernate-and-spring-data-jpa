@@ -5,7 +5,6 @@ import jakarta.persistence.OneToOne;
 import lombok.*;
 
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,8 +12,15 @@ import lombok.*;
 public class OrderApproval extends BaseEntity {
 
     private String approvedBy;
-    
+
     @OneToOne
     private OrderHeader orderHeader;
-    
+
+    public OrderApproval(String approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public void associateOrderHeader(OrderHeader orderHeader) {
+        this.orderHeader = orderHeader;
+    }
 }
