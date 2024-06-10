@@ -25,7 +25,7 @@ import java.util.Set;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Slf4j
-public class EagerVsLazyTest {
+public class EagerVsLazyFetchType {
 
     @Autowired
     private CustomerRepository customerRepository;

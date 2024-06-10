@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @ActiveProfiles("local")
 @SpringBootTest
 @Slf4j
-public class LazyInitializeErrorTest {
+public class LazyInitializationException {
 
     private static final String CUSTOMER_NAME = "CustomerForLazyInitializationError";
 
