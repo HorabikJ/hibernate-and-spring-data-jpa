@@ -1,13 +1,14 @@
-package guru.springframework.sdjpaintro;
+package guru.springframework.sdjpaintro.interestingProblems;
 
 import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.CustomerRepository;
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.OrderHeaderRepository;
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ActiveProfiles("local")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -37,7 +39,7 @@ public class N_PlusOneProblem {
     @Autowired
     private OrderHeaderRepository orderHeaderRepository;
 
-    @Disabled
+    //    @Disabled
     @Test
     @Commit
     @Order(1)
@@ -56,11 +58,11 @@ public class N_PlusOneProblem {
         Address billingAdr = new Address("billing_address", "billing_city", "billing_state", "billing_zipCode");
         Address shippingAdr = new Address("shipping_address", "shipping_city", "shipping_state", "shipping_zipCode");
 
-        Customer customer = new Customer("customerForNPlusOneProblem", adr, "phone", "email");
+        Customer customer = new Customer(CUSTOMER_NAME, adr, "phone", "email");
         customerRepository.save(customer);
 
         List<OrderHeader> orderHeaders = new LinkedList<>();
-        for (int i = 0; i <= 10_000; i++) {
+        for (int i = 0; i <= 5_000; i++) {
             OrderHeader orderHeader = new OrderHeader(customer, billingAdr, shippingAdr, OrderStatus.NEW,
                     new OrderApproval("approver name" + i));
             Set<OrderLine> orderLines = Set.of(
@@ -74,6 +76,7 @@ public class N_PlusOneProblem {
     }
 
     @Test
+    @Order(2)
     public void testN_PlusOneProblem_noSolution() {
         long start = System.currentTimeMillis();
         //first we fetch the customer
@@ -91,6 +94,7 @@ public class N_PlusOneProblem {
     }
 
     @Test
+    @Order(3)
     public void testN_PlusOneProblem_EntityGraphSolution() {
         long start = System.currentTimeMillis();
         //first we fetch the customer
@@ -108,6 +112,7 @@ public class N_PlusOneProblem {
     }
 
     @Test
+    @Order(4)
     public void testN_PlusOneProblem_leftJoinFetchSolution() {
         long start = System.currentTimeMillis();
         //first we fetch the customer

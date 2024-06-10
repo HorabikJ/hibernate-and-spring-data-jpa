@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro;
+package guru.springframework.sdjpaintro.interestingProblems;
 
 import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.CategoryRepository;
@@ -6,9 +6,10 @@ import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.Customer
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.OrderHeaderRepository;
 import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -19,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ActiveProfiles("local")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -36,7 +38,7 @@ public class EagerVsLazyTest {
 
     private static final List<Long> IDS = new LinkedList<>();
 
-    @Disabled
+    //    @Disabled
     @Test
     @Commit
     @Order(1)
