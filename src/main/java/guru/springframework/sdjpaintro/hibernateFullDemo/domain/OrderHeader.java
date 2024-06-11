@@ -60,10 +60,13 @@ public class OrderHeader extends BaseEntity {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @EqualsAndHashCode.Exclude
     private OrderApproval orderApproval;
-    
+
     @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @EqualsAndHashCode.Exclude
     private Set<OrderLine> orderLines = new HashSet<>();
+
+    @Version
+    private Integer version;
 
     public OrderHeader(Customer customer, Address shippingAddress, Address billingAddress, OrderStatus orderStatus,
                        OrderApproval orderApproval) {
