@@ -3,6 +3,7 @@ package guru.springframework.sdjpaintro.hibernateFullDemo.domain;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 import lombok.*;
 
 import java.util.LinkedHashSet;
@@ -27,11 +28,14 @@ public class Customer extends BaseEntity {
     @EqualsAndHashCode.Exclude
     private Set<OrderHeader> orderHeaders = new LinkedHashSet<>();
 
+    @Version
+    private Integer version;
+
     public Customer(String name, Address address, String phone, String email) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.email = email;
     }
-    
+
 }
