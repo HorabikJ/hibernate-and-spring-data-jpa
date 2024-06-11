@@ -1,10 +1,10 @@
 package guru.springframework.sdjpaintro.interestingProblems;
 
-import guru.springframework.sdjpaintro.hibernateJavaMappings.domain.*;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.CategoryRepository;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.CustomerRepository;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.OrderHeaderRepository;
-import guru.springframework.sdjpaintro.hibernateJavaMappings.repository.ProductRepository;
+import guru.springframework.sdjpaintro.hibernateFullDemo.domain.*;
+import guru.springframework.sdjpaintro.hibernateFullDemo.repository.CategoryRepository;
+import guru.springframework.sdjpaintro.hibernateFullDemo.repository.CustomerRepository;
+import guru.springframework.sdjpaintro.hibernateFullDemo.repository.OrderHeaderRepository;
+import guru.springframework.sdjpaintro.hibernateFullDemo.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
