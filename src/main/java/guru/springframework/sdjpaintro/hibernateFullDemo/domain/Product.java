@@ -23,6 +23,8 @@ public class Product extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
+    private Integer quantityOnHand;
+
     public Product(String description, ProductStatus productStatus) {
         this.description = description;
         this.productStatus = productStatus;
