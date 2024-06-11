@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class OptimisticLockingService {
+public class OptimisticLockingDemoService {
 
     // To be honest I do not know how to invoke a situation with OptimisticLocking Exception from a application code 
     // using threads. As the below 2 methods `optimisticLockingTest_NoTransactional` and 
