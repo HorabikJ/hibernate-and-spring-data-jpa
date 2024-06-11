@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -27,6 +29,17 @@ public class ProductService {
         product.setQuantityOnHand(quantityOnHand);
 
         return productRepository.save(product);
+    }
+
+    // By default, in Jpa every standalone repository call is wrapped in a transaction if there is no current active 
+    // transaction that a given call is executed inside. As in below example, the `productRepository.findById(id)` 
+    // will be executed inside an implicit transaction.
+    // The below method fails, as `productRepository.findById(id)` has a pessimistic lock on it that is implemented 
+    // with the usage of `@Lock(LockModeType.PESSIMISTIC_WRITE)` and results in a following sql statement `select for
+    // update`. And it is not allowed to use that lock in readonly transaction. I think that Jpa/Hibernate is clever 
+    // enough to distinguish a DML and DQL statements and applu readonly transaction to DQL only. 
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
     }
 
     @Transactional(readOnly = true)

@@ -6,9 +6,11 @@ import guru.springframework.sdjpaintro.hibernateFullDemo.service.locking.pesimis
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @ActiveProfiles("local")
@@ -23,7 +25,7 @@ public class PessimisticLockingDemoOnProduct {
     // fires 3 queries: 1. `insert into`, 2. `select for update`, 3. `update`.
     // I am wondering why in @Transactional context Hibernate does not fire `update` sql at the end. The state of the
     // Hibernate session has to be somehow flushed to db so why there `update` sql is missing?
-    public void shouldUpdateQuantityOnHand() {
+    public void should_update_quantity_on_hand() {
         Product newProduct = new Product("super cool product", ProductStatus.NEW);
         newProduct.setQuantityOnHand(15);
 
@@ -34,6 +36,11 @@ public class PessimisticLockingDemoOnProduct {
         Product updated = productService.updateQuantityOnHand(savedProduct.getId(), 30);
 
         assertThat(updated.getQuantityOnHand()).isEqualTo(30);
+    }
+
+    @Test
+    public void can_not_use_select_for_update_sql_in_read_only_transaction() {
+        assertThatThrownBy(() -> productService.findById(1L)).isInstanceOf(JpaSystemException.class);
     }
 
 }
