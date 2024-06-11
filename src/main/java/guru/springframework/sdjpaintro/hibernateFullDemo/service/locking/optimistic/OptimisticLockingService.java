@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.hibernateFullDemo.service.optimisticlocking;
+package guru.springframework.sdjpaintro.hibernateFullDemo.service.locking.optimistic;
 
 import guru.springframework.sdjpaintro.hibernateFullDemo.domain.Address;
 import guru.springframework.sdjpaintro.hibernateFullDemo.domain.Customer;
