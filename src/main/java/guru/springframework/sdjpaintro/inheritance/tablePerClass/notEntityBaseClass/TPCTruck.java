@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "table_per_class_truck")
+@Table(name = "table_per_class_truck_no_entity_parent")
 @Entity
 public class TPCTruck extends Vehicle {
 

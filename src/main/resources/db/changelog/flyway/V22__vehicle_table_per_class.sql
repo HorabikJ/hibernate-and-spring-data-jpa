@@ -1,4 +1,4 @@
-create table table_per_class_truck
+create table table_per_class_truck_no_entity_parent
 (
     id            bigint  not null auto_increment primary key,
     model         varchar(50),
@@ -10,7 +10,7 @@ create table table_per_class_truck
     modified_date timestamp
 );
 
-create table table_per_class_sports_vehicle
+create table table_per_class_sports_vehicle_no_entity_parent
 (
     id            bigint  not null auto_increment primary key,
     model         varchar(50),

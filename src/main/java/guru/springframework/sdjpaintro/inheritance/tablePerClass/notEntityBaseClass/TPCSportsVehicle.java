@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "table_per_class_sports_vehicle")
+@Table(name = "table_per_class_sports_vehicle_no_entity_parent")
 @Entity
 public class TPCSportsVehicle extends Vehicle {
 
