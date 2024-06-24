@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.inheritance.tablePerClass.notEntityBaseClass;
+package guru.springframework.sdjpaintro.inheritance.tablePerClass.entityConcreteBaseClass;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -12,9 +12,9 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "table_per_class_sports_vehicle_no_entity_parent")
+@Table(name = "table_per_class_sports_vehicle_entity_concrete_parent")
 @Entity
-public class TPCSportsVehicle extends Vehicle {
+public class TPCSportsVehicleEntityParent extends Vehicle {
 
     private BigDecimal secondsTo100;
 

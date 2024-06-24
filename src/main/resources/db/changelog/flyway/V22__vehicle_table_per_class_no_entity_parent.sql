@@ -21,3 +21,4 @@ create table table_per_class_sports_vehicle_no_entity_parent
     created_date  timestamp,
     modified_date timestamp
 );
+

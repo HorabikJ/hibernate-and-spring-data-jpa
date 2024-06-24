@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.inheritance.tablePerClass.notEntityBaseClass;
+package guru.springframework.sdjpaintro.inheritance.tablePerClass.notEntityAbstractBaseClass;
 
 import guru.springframework.sdjpaintro.hibernateFullDemo.domain.BaseEntity;
 import jakarta.persistence.Inheritance;
@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// I would recommend this approach rather than in 
+// `guru.springframework.sdjpaintro.inheritance.tablePerClass.entityConcreteBaseClass` package.
+// It is just for demonstration purpose.
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
