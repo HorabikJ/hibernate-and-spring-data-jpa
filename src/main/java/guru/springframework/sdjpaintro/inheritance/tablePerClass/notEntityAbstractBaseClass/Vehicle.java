@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 // I would recommend this approach rather than in 
-// `guru.springframework.sdjpaintro.inheritance.tablePerClass.entityConcreteBaseClass` package.
-// It is just for demonstration purpose.
+// `guru.springframework.sdjpaintro.inheritance.tablePerClass.entityConcreteBaseClass` package or in 
+// `guru.springframework.sdjpaintro.inheritance.tablePerClass.entityAbstractBaseClass` package.
+
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

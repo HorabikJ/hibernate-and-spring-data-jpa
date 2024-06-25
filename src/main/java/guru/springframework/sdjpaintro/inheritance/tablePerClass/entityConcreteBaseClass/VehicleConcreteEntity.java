@@ -16,13 +16,13 @@ import java.sql.Timestamp;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
 @Table(name = "vehicle_entity_concrete_parent")
-public class Vehicle {
+public class VehicleConcreteEntity {
 
     // When using @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS), we can not use 
     // @GeneratedValue(strategy = GenerationType.IDENTITY) on a parent @Entity class. We have to use 
     // @GeneratedValue(strategy = GenerationType.TABLE).
-    // That is why when base class is @Entity, Hibernate creates a `hibernate_sequences` table which serves as id 
-    // source for the @Entity classes that are children of base @Entity. 
+    // It is  like that because when base class is @Entity, Hibernate creates a `hibernate_sequences` table which 
+    // serves as id source for the @Entity classes that are children of base @Entity. 
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
