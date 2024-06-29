@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Vehicle extends BaseEntity {
+public abstract class TPCVehicle extends BaseEntity {
 
     private int horsePower;
     private String make;

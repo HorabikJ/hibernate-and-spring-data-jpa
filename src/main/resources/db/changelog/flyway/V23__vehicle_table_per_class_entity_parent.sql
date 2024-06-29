@@ -11,7 +11,7 @@ values ('default', 0);
 
 # ----tables for concrete parent class below
 
-create table vehicle_entity_concrete_parent
+create table table_per_class_vehicle_entity_concrete_parent
 (
     id            bigint  not null,
     make          varchar(255),
@@ -48,7 +48,7 @@ create table table_per_class_sports_vehicle_entity_concrete_parent
 
 # ----tables for abstract parent class below
 
-create table vehicle_entity_abstract_parent
+create table table_per_class_vehicle_entity_abstract_parent
 (
     id            bigint  not null,
     make          varchar(255),

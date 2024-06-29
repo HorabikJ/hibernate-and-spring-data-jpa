@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.inheritance.tablePerClass.entityAbstractBaseClass;
+package guru.springframework.sdjpaintro.inheritance.tablePerClass.entityConcreteBaseClass;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,17 +10,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
-//   To be honest I do not see any point of having an `abstract` class which is also an @Entity, as we can not 
-//   instantiate the object of this class for the purpose of using this object in a db query. I created an example 
-//   like that just for learning/educational purposes.
-
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
-@Table(name = "vehicle_entity_abstract_parent")
-public abstract class VehicleAbstractEntity {
+@Table(name = "table_per_class_vehicle_entity_concrete_parent")
+public class TPCVehicleConcreteEntity {
 
     // When using @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS), we can not use 
     // @GeneratedValue(strategy = GenerationType.IDENTITY) on a parent @Entity class. We have to use 

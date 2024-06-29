@@ -1,7 +1,7 @@
-package guru.springframework.sdjpaintro.inheritance.mappedSuperClass;
+package guru.springframework.sdjpaintro.inheritance.singleTable;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +10,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "mapped_super_class_truck")
 @Entity
-public class MSCTruck extends MSCVehicle {
+@DiscriminatorValue(value = "truck") //default value is a class name 
+public class STTruck extends STVehicle {
 
     private int loadLimitKg;
-    
+
 }

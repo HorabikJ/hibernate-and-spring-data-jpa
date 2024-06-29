@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @MappedSuperclass
-public abstract class Vehicle extends BaseEntity {
+public abstract class MSCVehicle extends BaseEntity {
 
     private int horsePower;
     private String make;

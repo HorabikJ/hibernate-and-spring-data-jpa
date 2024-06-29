@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "mapped_super_class_sports_vehicle")
 @Entity
-public class MSCSportsVehicle extends Vehicle {
+public class MSCSportsVehicle extends MSCVehicle {
 
     private BigDecimal secondsTo100;
 
