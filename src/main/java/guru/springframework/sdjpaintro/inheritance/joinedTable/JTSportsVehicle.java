@@ -1,7 +1,7 @@
-package guru.springframework.sdjpaintro.inheritance.singleTable;
+package guru.springframework.sdjpaintro.inheritance.joinedTable;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +12,9 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "joined_table_sports_vehicle")
 @Entity
-@DiscriminatorValue(value = "sports_vehicle")  //default value is a class name
-public class STSportsVehicle extends STVehicle {
+public class JTSportsVehicle extends JTVehicle {
 
     private BigDecimal secondsTo100;
 
