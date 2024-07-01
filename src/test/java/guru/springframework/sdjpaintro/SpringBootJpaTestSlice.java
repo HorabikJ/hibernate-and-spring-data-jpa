@@ -16,20 +16,20 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
 @DataJpaTest brings up only context with @Repository classes, to give minimum context for testing repositories. So, 
-because of that the {@link guru.springframework.sdjpaintro.bootstrap.DataInitializer} is not run as it would be with 
-@SpringBootTest class. Also, @DataJpaTest consist of @Transactional, so all test in this class are @Transactional, 
-which is not present in @SpringBootTest.
-By adding {@code @ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})} we add bean 
-{@link guru.springframework.sdjpaintro.bootstrap.DataInitializer} to the context of this test, so this bean will be 
-initialized with the run of below test class.
+because of that the {@link guru.springframework.sdjpaintro.dataInitializer.DataInitializer} is not run as it would be with 
+ @SpringBootTest class. Also, @DataJpaTest consist of @Transactional, so all test in this class are @Transactional, 
+ which is not present in @SpringBootTest.
+ By adding {@code @ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})} we add bean 
+ {@link guru.springframework.sdjpaintro.dataInitializer.DataInitializer} to the context of this test, so this bean will be 
+ initialized with the run of below test class.
 
-{@code @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)} is added because we want to 
-configure our H2 in memory DB as per the properties in `application.properties`, not with SpringBoot default 
-autoconfigure values.
+ {@code @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)} is added because we want to 
+ configure our H2 in memory DB as per the properties in `application.properties`, not with SpringBoot default 
+ autoconfigure values.
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
-@ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})
+@ComponentScan(basePackages = {"guru.springframework.sdjpaintro.dataInitializer"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class SpringBootJpaTestSlice {
 

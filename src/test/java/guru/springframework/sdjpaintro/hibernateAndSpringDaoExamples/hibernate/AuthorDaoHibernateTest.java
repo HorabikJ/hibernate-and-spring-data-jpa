@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.dao.hibernate;
+package guru.springframework.sdjpaintro.hibernateAndSpringDaoExamples.hibernate;
 
 import guru.springframework.sdjpaintro.hibernatePrimaryKeys.domain.Author;
 import org.junit.jupiter.api.Test;

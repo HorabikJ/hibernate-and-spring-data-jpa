@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.dao.springDataJpa;
+package guru.springframework.sdjpaintro.hibernateAndSpringDaoExamples.springDataJpa;
 
 import guru.springframework.sdjpaintro.hibernatePrimaryKeys.domain.Author;
 import guru.springframework.sdjpaintro.hibernatePrimaryKeys.repository.AuthorJpaRepository;

@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.bootstrap;
+package guru.springframework.sdjpaintro.dataInitializer;
 
 import guru.springframework.sdjpaintro.hibernatePrimaryKeys.domain.AuthorUuid;
 import guru.springframework.sdjpaintro.hibernatePrimaryKeys.domain.Book;
