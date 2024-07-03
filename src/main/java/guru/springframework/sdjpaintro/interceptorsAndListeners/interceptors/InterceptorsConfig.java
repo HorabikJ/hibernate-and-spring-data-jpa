@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.config;
+package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors;
 
 import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor.EncodingInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Map;
 
 @Configuration
-
-public class InterceptorsAndListenersConfig implements HibernatePropertiesCustomizer {
+public class InterceptorsConfig implements HibernatePropertiesCustomizer {
 
     @Autowired
     private EncodingInterceptor encodingInterceptor;

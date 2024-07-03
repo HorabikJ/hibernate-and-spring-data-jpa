@@ -1,19 +1,21 @@
 package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.repository;
 
+import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.InterceptorsConfig;
 import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.entity.CreditCard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@DataJpaTest
+@ComponentScan(basePackageClasses = InterceptorsConfig.class)
 @ActiveProfiles("local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CreditCardRepositoryTest {
@@ -27,7 +29,6 @@ class CreditCardRepositoryTest {
     //make this test 2 separate tests with ordering
 
     @Test
-    @Transactional
     void restSaveAndStoreCreditCard() {
         CreditCard creditCard = new CreditCard("123234456567", "486", "04/2030");
 
