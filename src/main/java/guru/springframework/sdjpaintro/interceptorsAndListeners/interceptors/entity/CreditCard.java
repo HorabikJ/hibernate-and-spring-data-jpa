@@ -1,6 +1,8 @@
-package guru.springframework.sdjpaintro.interceptorsAndListeners.entity;
+package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.entity;
 
+import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor.EncodedString;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @EqualsAndHashCode
@@ -16,6 +18,8 @@ public class CreditCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @EncodedString
+    @NotBlank
     private String creditCardNumber;
 
     private String cvv;

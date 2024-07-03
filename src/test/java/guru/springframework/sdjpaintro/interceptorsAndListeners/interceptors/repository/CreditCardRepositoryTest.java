@@ -1,6 +1,6 @@
-package guru.springframework.sdjpaintro.interceptorsAndListeners.repository;
+package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.repository;
 
-import guru.springframework.sdjpaintro.interceptorsAndListeners.entity.CreditCard;
+import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.entity.CreditCard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -23,6 +23,8 @@ class CreditCardRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    //make this test 2 separate tests with ordering
 
     @Test
     @Transactional

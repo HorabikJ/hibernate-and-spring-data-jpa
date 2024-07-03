@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.interceptorsAndListeners.encoding;
+package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.encoding;
 
 
 import org.springframework.stereotype.Service;
