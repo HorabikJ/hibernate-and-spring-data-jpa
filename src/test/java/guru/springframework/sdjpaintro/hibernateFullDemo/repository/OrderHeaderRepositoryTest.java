@@ -44,7 +44,7 @@ class OrderHeaderRepositoryTest {
         Address address = createCustomerAddress();
         Customer customer = customerRepository.save(new Customer("name", address, "phone", "email"));
 
-        Product product = productRepository.saveAndFlush(new Product("super product", ProductStatus.NEW));
+        Product product = productRepository.saveAndFlush(new Product("super product", ProductStatus.NEW, 10));
         Category category = categoryRepository.saveAndFlush(new Category("super category"));
         product.associateCategory(category);
         category.associateProduct(product);

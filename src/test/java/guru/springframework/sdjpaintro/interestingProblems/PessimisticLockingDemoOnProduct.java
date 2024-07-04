@@ -26,8 +26,7 @@ public class PessimisticLockingDemoOnProduct {
     // I am wondering why in @Transactional context Hibernate does not fire `update` sql at the end. The state of the
     // Hibernate session has to be somehow flushed to db so why there `update` sql is missing?
     public void should_update_quantity_on_hand() {
-        Product newProduct = new Product("super cool product", ProductStatus.NEW);
-        newProduct.setQuantityOnHand(15);
+        Product newProduct = new Product("super cool product", ProductStatus.NEW, 15);
 
         Product savedProduct = productService.saveProduct(newProduct);
 

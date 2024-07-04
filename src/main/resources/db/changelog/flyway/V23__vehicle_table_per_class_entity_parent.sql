@@ -9,7 +9,7 @@ insert into hibernate_sequences(sequence_name, next_val)
 values ('default', 0);
 
 
-# ----tables for concrete parent class below
+-- tables for concrete parent class below
 
 create table table_per_class_vehicle_entity_concrete_parent
 (
@@ -46,7 +46,7 @@ create table table_per_class_sports_vehicle_entity_concrete_parent
     primary key (id)
 );
 
-# ----tables for abstract parent class below
+-- tables for abstract parent class below
 
 create table table_per_class_vehicle_entity_abstract_parent
 (

@@ -34,7 +34,7 @@ class ProductCategoryServiceTest {
     @Test
     public void associateProductWithCategory() {
         Category category = new Category("category one");
-        Product product = new Product("product one", ProductStatus.NEW);
+        Product product = new Product("product one", ProductStatus.NEW, 10);
 
         Product savedProduct = productRepository.saveAndFlush(product);
         Category savedCategory = categoryRepository.saveAndFlush(category);

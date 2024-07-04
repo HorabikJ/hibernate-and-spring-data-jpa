@@ -1,5 +1,6 @@
 package guru.springframework.sdjpaintro;
 
+import guru.springframework.sdjpaintro.dataInitializer.DataInitializer;
 import guru.springframework.sdjpaintro.hibernatePrimaryKeys.domain.Book;
 import guru.springframework.sdjpaintro.hibernatePrimaryKeys.repository.BookRepository;
 import org.junit.jupiter.api.MethodOrderer;
@@ -29,7 +30,7 @@ because of that the {@link guru.springframework.sdjpaintro.dataInitializer.DataI
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
-@ComponentScan(basePackages = {"guru.springframework.sdjpaintro.dataInitializer"})
+@ComponentScan(basePackageClasses = {DataInitializer.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class SpringBootJpaTestSlice {
 

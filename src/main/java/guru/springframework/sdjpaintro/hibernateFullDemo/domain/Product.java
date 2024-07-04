@@ -25,9 +25,10 @@ public class Product extends BaseEntity {
 
     private Integer quantityOnHand;
 
-    public Product(String description, ProductStatus productStatus) {
+    public Product(String description, ProductStatus productStatus, Integer quantityOnHand) {
         this.description = description;
         this.productStatus = productStatus;
+        this.quantityOnHand = quantityOnHand;
     }
 
     public void associateCategory(Category category) {
