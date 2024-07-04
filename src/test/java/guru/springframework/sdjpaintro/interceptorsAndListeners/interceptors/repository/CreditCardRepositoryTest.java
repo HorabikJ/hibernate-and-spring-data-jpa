@@ -25,6 +25,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+
+// This class when run standalone is ok, test passes. But when I run all tests in this repo this test class fails 
+// with bad assertions, so far I do not know why.
+
 class CreditCardRepositoryTest {
 
     private static final String CREDIT_CARD_NUMBER = "123234456567";
