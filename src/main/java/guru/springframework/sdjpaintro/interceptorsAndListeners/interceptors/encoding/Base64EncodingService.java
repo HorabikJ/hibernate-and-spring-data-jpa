@@ -4,7 +4,6 @@ package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.en
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Base64;
 
 @Service
@@ -17,7 +16,7 @@ public class Base64EncodingService implements EncodingService {
 
     @Override
     public String decode(String data) {
-        return Arrays.toString(Base64.getDecoder().decode(data));
+        return new String(Base64.getDecoder().decode(data), StandardCharsets.UTF_8);
     }
 
 }

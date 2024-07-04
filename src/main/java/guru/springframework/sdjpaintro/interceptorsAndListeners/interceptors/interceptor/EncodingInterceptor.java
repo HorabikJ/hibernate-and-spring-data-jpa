@@ -23,6 +23,9 @@ public class EncodingInterceptor implements Interceptor {
         this.encoder = encoder;
     }
 
+    // I do not implement any decoding logic in `onLoad` method as the documentation says that an empty uninitialized
+    // entity is provided to this method, so the array `Object[] state` has all null values, so there is nothing to 
+    // decode. To decode the credit card number @PostLoad annotated method in entity. 
     @Override
     public boolean onLoad(Object entity, Object id, Object[] state, String[] propertyNames, Type[] types) throws CallbackException {
         log.info("I am in 'onLoad()' method.");

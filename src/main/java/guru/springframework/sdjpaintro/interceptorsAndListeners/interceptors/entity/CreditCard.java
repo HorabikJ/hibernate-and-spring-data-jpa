@@ -1,5 +1,7 @@
 package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.entity;
 
+import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.encoding.Base64EncodingService;
+import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.encoding.EncodingService;
 import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor.EncodedString;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -14,12 +16,15 @@ import lombok.*;
 @Table(name = "credit_card")
 public class CreditCard {
 
+    private static final EncodingService ENCODING_SERVICE = new Base64EncodingService();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @EncodedString
     @NotBlank
+
     private String creditCardNumber;
 
     private String cvv;
@@ -31,4 +36,10 @@ public class CreditCard {
         this.cvv = cvv;
         this.expirationDate = expirationDate;
     }
+
+    @PostLoad
+    public void decodeCreditCardNumber() {
+        creditCardNumber = ENCODING_SERVICE.decode(creditCardNumber);
+    }
+
 }
