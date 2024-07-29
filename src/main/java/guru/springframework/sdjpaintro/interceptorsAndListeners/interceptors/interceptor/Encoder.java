@@ -1,21 +1,20 @@
-package guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.template;
-
+package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor;
 
 import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.service.EncodingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Decoder extends TemplateEncoder {
+class Encoder extends TemplateEncoder {
 
     @Autowired
-    public Decoder(EncodingService encodingService) {
+    public Encoder(EncodingService encodingService) {
         super(encodingService);
     }
 
     @Override
     void encodeOrDecode(int i, Object[] state) {
-        state[i] = encodingService.decode(state[i].toString());
+        state[i] = encodingService.encode(state[i].toString());
     }
 
 }

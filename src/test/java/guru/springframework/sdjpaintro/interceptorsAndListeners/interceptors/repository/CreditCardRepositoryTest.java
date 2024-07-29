@@ -1,10 +1,10 @@
 package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.repository;
 
 import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.service.Base64EncodingService;
-import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.template.Decoder;
-import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.template.Encoder;
 import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.InterceptorsConfig;
 import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.entity.CreditCard;
+import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor.Decoder;
+import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor.Encoder;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

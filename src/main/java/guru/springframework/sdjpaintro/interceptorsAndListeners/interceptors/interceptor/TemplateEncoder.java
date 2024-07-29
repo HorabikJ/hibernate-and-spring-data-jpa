@@ -1,5 +1,6 @@
-package guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.template;
+package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor;
 
+import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.annotations.EncodedString;
 import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.service.EncodingService;
 
 import java.lang.reflect.Field;

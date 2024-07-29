@@ -1,7 +1,5 @@
 package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor;
 
-import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.template.Decoder;
-import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.template.Encoder;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.CallbackException;
 import org.hibernate.Interceptor;
