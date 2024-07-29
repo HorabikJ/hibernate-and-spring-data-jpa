@@ -3,8 +3,6 @@ package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.re
 import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.service.Base64EncodingService;
 import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.InterceptorsConfig;
 import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.entity.CreditCard;
-import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor.Decoder;
-import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor.Encoder;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -26,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ComponentScan(basePackageClasses = InterceptorsConfig.class)
-@Import({Decoder.class, Encoder.class, Base64EncodingService.class})
+@Import({Base64EncodingService.class})
 @ActiveProfiles("local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
