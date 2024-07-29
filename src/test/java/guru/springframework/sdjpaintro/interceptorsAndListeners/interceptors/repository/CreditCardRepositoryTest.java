@@ -1,5 +1,8 @@
 package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.repository;
 
+import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.service.Base64EncodingService;
+import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.template.Decoder;
+import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.template.Encoder;
 import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.InterceptorsConfig;
 import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.entity.CreditCard;
 import org.junit.jupiter.api.MethodOrderer;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
@@ -22,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ComponentScan(basePackageClasses = InterceptorsConfig.class)
+@Import({Decoder.class, Encoder.class, Base64EncodingService.class})
 @ActiveProfiles("local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

@@ -1,8 +1,8 @@
 package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.entity;
 
-import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.encoding.service.Base64EncodingService;
-import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.encoding.service.EncodingService;
-import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.encoding.template.EncodedString;
+import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.service.Base64EncodingService;
+import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.service.EncodingService;
+import guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.template.EncodedString;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.encoding.service;
+package guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.service;
 
 public interface EncodingService {
 

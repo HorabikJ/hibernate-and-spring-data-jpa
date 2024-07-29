@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.encoding.template;
+package guru.springframework.sdjpaintro.interceptorsAndListeners.encoding.template;
 
 import java.lang.annotation.*;
 
