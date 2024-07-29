@@ -1,7 +1,6 @@
-package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.interceptor.encoder;
+package guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.encoding;
 
 
-import guru.springframework.sdjpaintro.interceptorsAndListeners.interceptors.encoding.EncodingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
