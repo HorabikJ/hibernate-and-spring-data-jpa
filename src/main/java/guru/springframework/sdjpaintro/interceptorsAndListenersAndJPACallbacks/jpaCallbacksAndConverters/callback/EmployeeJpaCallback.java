@@ -1,6 +1,7 @@
-package guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.jpaCallbacks.entity;
+package guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.jpaCallbacksAndConverters.callback;
 
 import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.encoding.service.EncodingService;
+import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.jpaCallbacksAndConverters.entity.Employee;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

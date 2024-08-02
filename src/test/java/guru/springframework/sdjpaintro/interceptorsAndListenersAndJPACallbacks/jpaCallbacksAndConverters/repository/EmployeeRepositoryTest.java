@@ -1,8 +1,8 @@
-package guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.jpaCallbacks.repository;
+package guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.jpaCallbacksAndConverters.repository;
 
 import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.encoding.service.Base64EncodingService;
-import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.jpaCallbacks.entity.Employee;
-import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.jpaCallbacks.entity.EmployeeJpaCallback;
+import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.jpaCallbacksAndConverters.callback.EmployeeJpaCallback;
+import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.jpaCallbacksAndConverters.entity.Employee;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -35,13 +35,16 @@ class EmployeeRepositoryTest {
                 "John",
                 "Doe",
                 new BigDecimal("100.45"),
-                "classified personal info");
+                "classified personal info",
+                "another classified personal info");
 
         Employee saved = employeeRepository.saveAndFlush(employee);
 
-        Map<String, Object> resultMap = jdbcTemplate.queryForMap("SELECT data_to_encode FROM employee " +
+        Map<String, Object> resultMap = jdbcTemplate.queryForMap("SELECT data_to_encode, second_data_to_encode" +
+                " FROM employee " +
                 "WHERE id = ?", saved.getId());
         String dataToEncodeRawValue = resultMap.get("data_to_encode").toString();
+        String secondDataToEncodeRawValue = resultMap.get("second_data_to_encode").toString();
 
         assertThat(saved).isNotNull();
         assertThat(saved.getName()).isEqualTo("John");
@@ -49,13 +52,14 @@ class EmployeeRepositoryTest {
         assertThat(saved.getSalary()).isEqualTo(new BigDecimal("100.45"));
         assertThat(saved.getDataToEncode()).isEqualTo("classified personal info");
         assertThat(dataToEncodeRawValue).isEqualTo("Y2xhc3NpZmllZCBwZXJzb25hbCBpbmZv");
+        assertThat(secondDataToEncodeRawValue).isEqualTo("YW5vdGhlciBjbGFzc2lmaWVkIHBlcnNvbmFsIGluZm8=");
     }
 
     @Test
     @Sql(statements = "INSERT INTO employee " +
-            "(id, name, surname, salary, data_to_encode, created_date, modified_date) " +
+            "(id, name, surname, salary, data_to_encode, second_data_to_encode, created_date, modified_date) " +
             "VALUES " +
-            "(999, 'John', 'Smith', 100.77, 'Y2xhc3NpZmllZCBwZXJzb25hbCBpbmZv', null, null)")
+            "(999, 'John', 'Smith', 100.77, 'Y2xhc3NpZmllZCBwZXJzb25hbCBpbmZv', 'YW5vdGhlciBjbGFzc2lmaWVkIHBlcnNvbmFsIGluZm8=', null, null)")
     public void shouldFetchEmployeeWithEncodedFieldCorrectly() {
         Employee fetched = employeeRepository.getById(999L);
 
@@ -64,6 +68,7 @@ class EmployeeRepositoryTest {
         assertThat(fetched.getSurname()).isEqualTo("Smith");
         assertThat(fetched.getSalary()).isEqualTo(new BigDecimal("100.77"));
         assertThat(fetched.getDataToEncode()).isEqualTo("classified personal info");
+        assertThat(fetched.getSecondDataToEncode()).isEqualTo("another classified personal info");
     }
 
 }
