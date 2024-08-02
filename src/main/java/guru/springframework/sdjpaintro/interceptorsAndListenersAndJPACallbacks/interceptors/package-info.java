@@ -1,6 +1,0 @@
-package guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.interceptors;
-
-// Where to find info about interceptors in this package
-// 1. EncodingInterceptor.java
-// 2. @PostLoad annotation in CreditCard.java
-// 3. CreditCardRepositoryTest.java
