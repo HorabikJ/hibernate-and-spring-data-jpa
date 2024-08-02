@@ -4,18 +4,15 @@ import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.e
 import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.encoding.service.Base64EncodingService;
 import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.listeners.ListenersConfig;
 import guru.springframework.sdjpaintro.interceptorsAndListenersAndJPACallbacks.listeners.entity.Person;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Map;
 
@@ -26,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import({Base64EncodingService.class, EntityEncoder.class})
 @ActiveProfiles("local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PersonRepositoryTest {
 
     @Autowired
@@ -35,17 +31,11 @@ class PersonRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private static Long personId;
-    
     @Test
-    @Order(1)
-    @Commit
     public void testSaveAndRetrievePersonInOneHibernateSession() {
         Person person = new Person("Jack", "Strong", "dataToEncode");
         Person savedPerson = personRepository.saveAndFlush(person);
 
-        personId = savedPerson.getId();
-        
         assertThat(savedPerson.getId()).isNotNull();
         assertThat(savedPerson.getName()).isEqualTo("Jack");
         assertThat(savedPerson.getSurname()).isEqualTo("Strong");
@@ -65,13 +55,15 @@ class PersonRepositoryTest {
     }
 
     @Test
-    @Order(2)
+    @Sql(statements = "INSERT INTO person (id, name, surname, personal_data_to_encode)" +
+            " VALUES (444, 'Bill', 'Gates', 'ZGF0YVRvRW5jb2Rl')")
     public void testFetchPersonFromDbAndDecodeItsDataInDifferentHibernateSession() {
-        Person fetched = personRepository.getById(personId);
+        Person fetched = personRepository.getById(444L);
 
         assertThat(fetched.getId()).isNotNull();
-        assertThat(fetched.getName()).isEqualTo("Jack");
-        assertThat(fetched.getSurname()).isEqualTo("Strong");
+        assertThat(fetched.getName()).isEqualTo("Bill");
+        assertThat(fetched.getSurname()).isEqualTo("Gates");
         assertThat(fetched.getPersonalDataToEncode()).isEqualTo("dataToEncode");
     }
+
 }
